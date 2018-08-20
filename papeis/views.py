@@ -19,7 +19,10 @@ class PapelViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
                     viewsets.GenericViewSet):
     """
     list:
-    Retorna a lista de todos os papeis existentes.
+    Retorna uma lista com todos os papeis existentes.
+
+    retrieve:
+    Retorna um resitro de papeis existentes.
     """
     queryset = Papel.objects.all()
     serializer_class = PapelSerializer
