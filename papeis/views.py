@@ -6,8 +6,8 @@ from rest_framework import viewsets, mixins
 from papeis.serializers import PapelSerializer
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+# def index(request):
+#     return HttpResponse("Hello, world. You're at the polls index.")
 
 # mixins.CreateModelMixin, 
 # mixins.RetrieveModelMixin, # retorna unico registro
