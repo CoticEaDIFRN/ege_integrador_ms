@@ -1,7 +1,16 @@
 from django.urls import path
+from django.conf.urls import url, include
+from rest_framework import routers
 
 from . import views
 
+router = routers.DefaultRouter()
+router.register(r'papeis', views.PapelViewSet)
+
+
 urlpatterns = [
-    path('', views.index, name='index'),
+    # path('', views.index, name='index'),
+    url(r'^', include(router.urls)),
+    # url(r'^api-v1/', include(router.urls, 'papeis')),
+    # url(r'^api-v1/', include('rest_framework.urls', namespace='rest_framework'))
 ]
