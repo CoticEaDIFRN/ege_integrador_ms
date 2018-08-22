@@ -31,4 +31,9 @@ class Moodle(Base):
 
     def __init__(self, urlBase, token, resource):
         super(Moodle, self).__init__(urlBase, token, resource)
+
+class Suap(Base):
+    
+    def __init__(self, urlBase, token, resource):
+        super(Suap, self).__init__(urlBase, token, resource)
     

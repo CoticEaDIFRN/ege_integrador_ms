@@ -10,7 +10,7 @@ class BaseModelTests(TestCase):
 
     def teste_de_sanidade(self):
         """
-        Teste se o objeto está se comportando como deveria.
+        Verifica se o objeto tem o comportamento padrão esperado.
         """
         base = Base('http://localhost:8000', 'abcdefghijlmnopqrstuvxz', 'get_users')
         self.assertEqual(base.getUrlBase(), 'http://localhost:8000')
@@ -21,9 +21,20 @@ class MoodleModelTests(TestCase):
 
     def teste_de_sanidade(self):
         """
-        Teste se o objeto está se comportando como deveria.
+        Verifica se o objeto tem o comportamento padrão esperado.
         """
-        moodle = Moodle('http://localhost:8000', 'abcdefghijlmnopqrstuvxz', 'get_users')
-        self.assertEqual(moodle.getUrlBase(), 'http://localhost:8000')
-        self.assertEqual(moodle.getToken(), 'abcdefghijlmnopqrstuvxz')
-        self.assertEqual(moodle.getResource(), 'get_users')
+        model = Moodle('http://localhost:8000', 'abcdefghijlmnopqrstuvxz', 'get_users')
+        self.assertEqual(model.getUrlBase(), 'http://localhost:8000')
+        self.assertEqual(model.getToken(), 'abcdefghijlmnopqrstuvxz')
+        self.assertEqual(model.getResource(), 'get_users')
+
+class SuapModelTests(TestCase):
+    
+    def teste_de_sanidade(self):
+        """
+        Verifica se o objeto tem o comportamento padrão esperado.
+        """
+        model = Moodle('http://localhost:8000', 'abcdefghijlmnopqrstuvxz', 'get_users')
+        self.assertEqual(model.getUrlBase(), 'http://localhost:8000')
+        self.assertEqual(model.getToken(), 'abcdefghijlmnopqrstuvxz')
+        self.assertEqual(model.getResource(), 'get_users')
