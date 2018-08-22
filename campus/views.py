@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import viewsets, mixins
+from campus.models import Campus
+from campus.serializers import CampusSerializer
 
-# Create your views here.
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+
+class CampusViewSet(viewsets.ModelViewSet):
+    queryset = Campus.objects.all()
+    serializer_class = CampusSerializer

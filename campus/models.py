@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Campus(models.Model):
     codigo_moodle = models.IntegerField(unique=True, null=False)
     codigo_suap = models.IntegerField(unique=True, null=False)
