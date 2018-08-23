@@ -37,11 +37,35 @@ class BaseModelTests(TestCase):
         base.setResponseFormat('json')
         self.assertEqual(base.getResponseFormat(), 'json')
 
+    def test_data(self):
+        """
+        Verifica se o objeto tem o comportamento esperado quando atribuido
+        algum valor ao dicionario data.
+        """
+        base = Base('http://localhost', 'test')
+        self.assertEqual(base.getData(), {})
+        
+        base.addData('param1', 10)
+        self.assertEqual(base.getData(), {'param1': 10})
+
+        base.addData('param2', 'test')
+        self.assertEqual(base.getData(), {'param1': 10, 'param2': 'test'})
+        
+
 class MoodleModelTests(TestCase):
 
     def teste_de_sanidade(self):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
+        """
+        model = Moodle()
+        self.assertEqual(model.getUrlBase(), 'http://localhost:8080/moodle/webservice/rest/server.php')
+        self.assertEqual(model.getToken(), '0b0c9af5bd3eba5a6fccbc3d1594376f')
+        self.assertEqual(model.getResponseFormat(), 'json')
+    
+    def teste_criacao_de_usuario(self):
+        """
+        Testa criação de usuário no moodle.
         """
         model = Moodle()
         self.assertEqual(model.getUrlBase(), 'http://localhost:8080/moodle/webservice/rest/server.php')

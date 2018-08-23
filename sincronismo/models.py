@@ -1,6 +1,6 @@
 # from django.db import models
 
-import json, requests
+import json, requests, abc
 
 class Base(object):
     
@@ -8,6 +8,7 @@ class Base(object):
         # super(Base, self).__init__()
         self._urlBase = urlBase
         self._token = token
+        self._data = {}
     
     def getUrlBase(self):
         return self._urlBase
@@ -33,8 +34,20 @@ class Base(object):
     def setResponseFormat(self, responseFormat):
         self._responseFormat = responseFormat
 
+    def getData(self):
+        return self._data
+    
+    def addData(self, key, value):
+        self._data[key] = value
 
-class Moodle(Base):
+class MyABC(metaclass=abc.ABCMeta):
+    
+    @abc.abstractmethod
+    def createUser(self):
+        pass
+
+
+class Moodle(Base, MyABC):
 
     def __init__(self):
         # TODO Colocar em arquivo de configuração da app
@@ -44,6 +57,11 @@ class Moodle(Base):
 
         super(Moodle, self).__init__(urlBase, token)
         self.setResponseFormat(responseFormat)
+
+    def createUser(self):
+        self.setData()
+        response = requests.post("http://jsonplaceholder.typicode.com/comments/", data=dados)
+    
 
 
 class Suap(Base):
@@ -57,4 +75,6 @@ class Suap(Base):
         super(Suap, self).__init__(urlBase, token)
         self.setResponseFormat(responseFormat)
 
+    def createUser(self):
+        return 1
     
