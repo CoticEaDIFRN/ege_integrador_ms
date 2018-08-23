@@ -4,6 +4,7 @@ from curso.models import Curso
 from curso.serializers import CursoSerializer
 
 
-class CursoViewSet(viewsets.ModelViewSet):
+class CursoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer

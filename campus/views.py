@@ -4,6 +4,7 @@ from campus.models import Campus
 from campus.serializers import CampusSerializer
 
 
-class CampusViewSet(viewsets.ModelViewSet):
+class CampusViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
     queryset = Campus.objects.all()
     serializer_class = CampusSerializer
