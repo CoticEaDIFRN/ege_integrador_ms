@@ -68,7 +68,7 @@ class MoodleModelTests(TestCase):
         Testa criação de usuário no moodle.
         """
         model = Moodle()
-        model.createUser()
+        model.createUser('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
 
 class SuapModelTests(TestCase):
     

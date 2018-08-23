@@ -5,7 +5,6 @@ import json, requests, abc
 class Base(object):
     
     def __init__(self, urlBase, token):
-        # super(Base, self).__init__()
         self._urlBase = urlBase
         self._token = token
         self._data = {}
@@ -40,6 +39,9 @@ class Base(object):
     def addData(self, key, value):
         self._data[key] = value
 
+    def getContentJson(self, content):
+        return json.loads(content)
+
 class MyABC(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
@@ -57,21 +59,40 @@ class Moodle(Base, MyABC):
 
         super(Moodle, self).__init__(urlBase, token)
         self.setResponseFormat(responseFormat)
-        self.addData('wstoken', self.getToken())
 
-    def createUser(self):
+        self.addData('wstoken', self.getToken())
+        self.addData('moodlewsrestformat', self.getResponseFormat())
+
+
+    def createUser(self, username, password, firstname, lastname, email):
+        """Cria um novo usuário no Moodle.
+
+        Args:
+            username: Login do usuário que será criado.
+            password: Senha do usuário.
+            firstname: Primeiro nome do novo usuário.
+            lastname: Último nome do novo usuário.
+            email: E-mail do novo usuário.
+        Returns:
+            ID do usuário no Moodle.
+        Raises:
+            TypeError: if n is not a number.
+            ValueError: if n is negative.
+
+        """
         self.setResource('core_user_create_users')
         
-        self.addData('wstoken', self.getToken())
         self.addData('wsfunction', self.getResource())
-        self.addData('users[0][username]', 'ptest')
-        self.addData('users[0][password]', 'ptest')
+        self.addData('users[0][username]', username)
+        self.addData('users[0][password]', password)
         self.addData('users[0][createpassword]', 1)
-        self.addData('users[0][firstname]', 'Python')
-        self.addData('users[0][lastname]', 'Test')
-        self.addData('users[0][email]', 'ptest@example.com')
+        self.addData('users[0][firstname]', firstname)
+        self.addData('users[0][lastname]', lastname)
+        self.addData('users[0][email]', email)
 
         response = requests.post(self.getUrlBase(), data=self.getData())
+        content = self.getContentJson(response.content)
+        return content[0]['id']
     
 
 
