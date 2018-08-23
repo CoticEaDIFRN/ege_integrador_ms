@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'campus.apps.CampusConfig',
     'papeis.apps.PapeisConfig',
+    'curso.apps.CursoConfig',
     'rest_framework',
     'rest_framework_swagger',
     'django.contrib.admin',
