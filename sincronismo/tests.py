@@ -68,9 +68,7 @@ class MoodleModelTests(TestCase):
         Testa criação de usuário no moodle.
         """
         model = Moodle()
-        self.assertEqual(model.getUrlBase(), 'http://localhost:8080/moodle/webservice/rest/server.php')
-        self.assertEqual(model.getToken(), '0b0c9af5bd3eba5a6fccbc3d1594376f')
-        self.assertEqual(model.getResponseFormat(), 'json')
+        model.createUser()
 
 class SuapModelTests(TestCase):
     

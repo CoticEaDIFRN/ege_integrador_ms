@@ -57,10 +57,21 @@ class Moodle(Base, MyABC):
 
         super(Moodle, self).__init__(urlBase, token)
         self.setResponseFormat(responseFormat)
+        self.addData('wstoken', self.getToken())
 
     def createUser(self):
-        self.setData()
-        response = requests.post("http://jsonplaceholder.typicode.com/comments/", data=dados)
+        self.setResource('core_user_create_users')
+        
+        self.addData('wstoken', self.getToken())
+        self.addData('wsfunction', self.getResource())
+        self.addData('users[0][username]', 'ptest')
+        self.addData('users[0][password]', 'ptest')
+        self.addData('users[0][createpassword]', 1)
+        self.addData('users[0][firstname]', 'Python')
+        self.addData('users[0][lastname]', 'Test')
+        self.addData('users[0][email]', 'ptest@example.com')
+
+        response = requests.post(self.getUrlBase(), data=self.getData())
     
 
 
