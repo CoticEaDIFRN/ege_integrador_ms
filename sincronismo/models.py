@@ -1,6 +1,6 @@
 # from django.db import models
 
-import json, requests, abc
+import json, requests, abc, sys
 
 class Base(object):
     
@@ -63,7 +63,6 @@ class Moodle(Base, MyABC):
         self.addData('wstoken', self.getToken())
         self.addData('moodlewsrestformat', self.getResponseFormat())
 
-
     def createUser(self, username, password, firstname, lastname, email):
         """Cria um novo usuário no Moodle.
 
@@ -74,6 +73,7 @@ class Moodle(Base, MyABC):
             lastname: Último nome do novo usuário.
             email: E-mail do novo usuário.
         Returns:
+            404: Página não encontrada
             ID do usuário no Moodle.
         Raises:
             TypeError: if n is not a number.
@@ -90,10 +90,24 @@ class Moodle(Base, MyABC):
         self.addData('users[0][lastname]', lastname)
         self.addData('users[0][email]', email)
 
-        response = requests.post(self.getUrlBase(), data=self.getData())
-        content = self.getContentJson(response.content)
-        return content[0]['id']
+        try:
+            response = requests.post(self.getUrlBase(), data=self.getData())
+            content = self.getContentJson(response.content)
+            if(response.status_code == 200 & self.requestException(content) == False):
+                print({ 'request': False, 'error': False, 'data': content[0] })
+            elif (response.status_code == 200):
+                print({ 'request': False, 'error': True, 'data': content })
+            else:
+                print({ 'request': True, 'code': response.status_code })
+        except:
+            print(sys.exc_info()[0])
+            return sys.exc_info()[0]
     
+    def requestException(self, data):
+        if 'exception' in data.keys():
+            return False
+        else:
+            return True
 
 
 class Suap(Base):
