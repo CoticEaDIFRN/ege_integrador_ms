@@ -3,9 +3,14 @@ from django.utils.translation import gettext_lazy as _
 
 class Campus(models.Model):
     
-    codigo_moodle = models.IntegerField(_('Código Moodle'), unique=True, null=False)
+    label = 'Código Moodle'
+    codigo_moodle = models.IntegerField(_(label), unique=True, null=False)
+
+    label = 'Código SUAP'
     codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False)
-    nome = models.CharField(_('Nome'), max_length=100)
+    
+    label = 'Nome'
+    nome = models.CharField(_(label), max_length=100)
     
     def __str__(self):
         return self.nome
@@ -16,10 +21,16 @@ class Campus(models.Model):
 
 
 class Curso(models.Model):
-
-    codigo_moodle = models.IntegerField(_('Código Moodle'), unique=True, null=False)
+    
+    label = 'Código Moodle'
+    t_help = 'Deve ser o mesmo código do Moodle'
+    codigo_moodle = models.IntegerField(_(label), help_text=_(t_help), unique=True, null=False)
+    
+    label = 'Código SUAP'
     codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False)
-    nome = models.CharField(_('Nome'), max_length=100)
+    
+    label = 'Nome'
+    nome = models.CharField(_(label), max_length=100)
     
     def __str__(self):
         return self.nome
@@ -31,9 +42,14 @@ class Curso(models.Model):
 
 class Papel(models.Model):
     
-    codigo_moodle = models.IntegerField(_('Código Moodle'), unique=True, null=False)
+    label = 'Código Moodle'
+    codigo_moodle = models.IntegerField(_(label), unique=True, null=False)
+
+    label = 'Código SUAP'
     codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False)
-    nome = models.CharField(_('Nome'), max_length=100)
+    
+    label = 'Nome'
+    nome = models.CharField(_(label), max_length=100)
 
     def __str__(self):
         return self.nome

@@ -1,8 +1,8 @@
 from django.test import TestCase
 
-from .models import Base
-from .models import Moodle
-from .models import Suap
+from .models import BaseWSClient
+from .models import MoodleWSClient
+from .models import SuapWSClient
 
 import json, requests
 
@@ -15,41 +15,41 @@ class BaseModelTests(TestCase):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
-        base = Base('http://localhost:8000', 'abcdefghijlmnopqrstuvxz')
-        self.assertEqual(base.getUrlBase(), 'http://localhost:8000')
-        self.assertEqual(base.getToken(), 'abcdefghijlmnopqrstuvxz')
+        base = BaseWSClient('http://localhost:8000', 'abcdefghijlmnopqrstuvxz')
+        self.assertEqual(base.url_base, 'http://localhost:8000')
+        self.assertEqual(base.token, 'abcdefghijlmnopqrstuvxz')
     
     def test_resource(self):
         """
         Verifica se o objeto tem o comportamento esperado quando atribuido
         algum recurso a ele.
         """
-        base = Base('http://localhost', 'test')
-        base.setResource('get_users')
-        self.assertEqual(base.getResource(), 'get_users')
+        base = BaseWSClient('http://localhost', 'test')
+        base.resource = 'get_users'
+        self.assertEqual(base.resource, 'get_users')
     
-    def test_responseFormat(self):
+    def test_response_format(self):
         """
         Verifica se o objeto tem o comportamento esperado quando atribuido
         algum formato de resposta a ele.
         """
-        base = Base('http://localhost', 'test')
-        base.setResponseFormat('json')
-        self.assertEqual(base.getResponseFormat(), 'json')
+        base = BaseWSClient('http://localhost', 'test')
+        base.response_format = 'json'
+        self.assertEqual(base.response_format, 'json')
 
     def test_data(self):
         """
         Verifica se o objeto tem o comportamento esperado quando atribuido
         algum valor ao dicionario data.
         """
-        base = Base('http://localhost', 'test')
-        self.assertEqual(base.getData(), {})
+        base = BaseWSClient('http://localhost', 'test')
+        self.assertEqual(base.params, {})
         
-        base.addData('param1', 10)
-        self.assertEqual(base.getData(), {'param1': 10})
+        base.add_param('param1', 10)
+        self.assertEqual(base.params, {'param1': 10})
 
-        base.addData('param2', 'test')
-        self.assertEqual(base.getData(), {'param1': 10, 'param2': 'test'})
+        base.add_param('param2', 'test')
+        self.assertEqual(base.params, {'param1': 10, 'param2': 'test'})
         
 
 class MoodleModelTests(TestCase):
@@ -58,16 +58,16 @@ class MoodleModelTests(TestCase):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
-        model = Moodle()
-        self.assertEqual(model.getUrlBase(), 'http://localhost:8080/moodle/webservice/rest/server.php')
-        self.assertEqual(model.getToken(), '0b0c9af5bd3eba5a6fccbc3d1594376f')
-        self.assertEqual(model.getResponseFormat(), 'json')
+        model = MoodleWSClient()
+        self.assertEqual(model.url_base, 'http://localhost:8080/moodle/webservice/rest/server.php')
+        self.assertEqual(model.token, '0b0c9af5bd3eba5a6fccbc3d1594376f')
+        self.assertEqual(model.response_format, 'json')
     
     def teste_criacao_de_usuario(self):
         """
         Testa criação de usuário no moodle.
         """
-        model = Moodle()
+        model = MoodleWSClient()
         model.createUser('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
 
 class SuapModelTests(TestCase):
@@ -76,7 +76,7 @@ class SuapModelTests(TestCase):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
-        model = Suap()
-        self.assertEqual(model.getUrlBase(), 'http://localhost:8080/moodle/webservice/rest/server.php')
-        self.assertEqual(model.getToken(), '0b0c9af5bd3eba5a6fccbc3d1594376f')
-        self.assertEqual(model.getResponseFormat(), 'json')
+        model = SuapWSClient()
+        self.assertEqual(model.url_base, 'http://localhost:8080/moodle/webservice/rest/server.php')
+        self.assertEqual(model.token, '0b0c9af5bd3eba5a6fccbc3d1594376f')
+        self.assertEqual(model.response_format, 'json')
