@@ -10,12 +10,19 @@ class BaseWSClient(object):
         self.params = {}
         self.resource = None
         self.response_format = None
+        self.response = None
     
     def add_param(self, key, value):
         self.params[key] = value
 
     def get_content_json(self, content):
         return json.loads(content)
+    
+    def send_post(self):
+        self.response = requests.post(self.url_base, data=self.params)
+    
+    def status_request(self):
+        return self.response.status_code
 
 class MyABC(metaclass=abc.ABCMeta):
     
@@ -65,18 +72,28 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('users[0][lastname]', lastname)
         self.add_param('users[0][email]', email)
 
-        # try:
-        #    response = requests.post(self.url_base, data=self.get_data())
-        #    content = self.get_content_json(response.content)
+        try:
+            # response = requests.post(self.url_base, data=self.params)
+            self.send_post()
+            print(self.status_request())
+
+            # if response.status_code == 200 :
+            #     print('ok')
+            # else:
+            #     print('erro')
+            # content = self.get_content_json(response.content)
+            # print(response.status_code)
+            # print(content)
+            # print('aki')
         #     if(response.status_code == 200 & self.requestException(content) == False):
         #         print({ 'request': False, 'error': False, 'data': content[0] })
         #     elif (response.status_code == 200):
         #         print({ 'request': False, 'error': True, 'data': content })
         #     else:
         #         print({ 'request': True, 'code': response.status_code })
-        # except:
-        #     print(sys.exc_info()[0])
-        #     return sys.exc_info()[0]
+        except:
+            print(sys.exc_info()[0])
+            return sys.exc_info()[0]
     
     def request_exception(self, data):
         if 'exception' in data.keys():
