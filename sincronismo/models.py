@@ -13,21 +13,29 @@ class BaseWSClient(object):
         self.response = None
     
     def add_param(self, key, value):
-        self.params[key] = value
-
-    def get_content_json(self, content):
-        return json.loads(content)
+        self.params[key] = value    
     
     def send_post(self):
         self.response = requests.post(self.url_base, data=self.params)
     
+    def content_request(self):
+        return self.response.content
+    
+    def content_request_json(self):
+        return json.loads(self.response.content)
+
     def status_request(self):
         return self.response.status_code
+
 
 class MyABC(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
-    def createUser(self):
+    def create_user(self):
+        pass
+
+    @abc.abstractmethod
+    def check_exception_callback(self, data):
         pass
 
 
@@ -45,7 +53,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('wstoken', self.token)
         self.add_param('moodlewsrestformat', self.response_format)
 
-    def createUser(self, username, password, firstname, lastname, email):
+    def create_user(self, username, password, firstname, lastname, email):
         """Cria um novo usuário no Moodle.
 
         Args:
@@ -76,6 +84,9 @@ class MoodleWSClient(BaseWSClient, MyABC):
             # response = requests.post(self.url_base, data=self.params)
             self.send_post()
             print(self.status_request())
+            print(self.content_request())
+            print(self.content_request_json())
+            print(self.check_callback(self.content_request_json()))
 
             # if response.status_code == 200 :
             #     print('ok')
@@ -95,11 +106,11 @@ class MoodleWSClient(BaseWSClient, MyABC):
             print(sys.exc_info()[0])
             return sys.exc_info()[0]
     
-    def request_exception(self, data):
+    def check_exception_callback(self, data):
         if 'exception' in data.keys():
-            return False
-        else:
             return True
+        else:
+            return False
 
 
 class SuapWSClient(BaseWSClient):
