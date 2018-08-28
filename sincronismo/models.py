@@ -13,18 +13,32 @@ class BaseWSClient(object):
         self.response = None
     
     def add_param(self, key, value):
+        """ Adiciona um novo parâmetro para ser usado na requisição.
+        
+        Args:
+            key: Parametro.
+            value: Valor do parâmetro.
+        """
         self.params[key] = value    
     
     def send_post(self):
+        """ Envia uma requisição do tipo POST. """
         self.response = requests.post(self.url_base, data=self.params)
     
-    def content_request(self):
+    def callback(self):
+        """ Callback da requisição requisição. """
         return self.response.content
     
-    def content_request_json(self):
+    def callback_json(self):
+        """ Callback da requisição requisição no formato JSON. """
         return json.loads(self.response.content)
 
     def status_request(self):
+        """ Status da requisição.
+
+        Returns:
+            Int: Código HTTP da requisição
+        """
         return self.response.status_code
 
 
@@ -36,6 +50,14 @@ class MyABC(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def check_exception_callback(self, data):
+        """ Verifica se a requisicão gerou alguma exception.
+
+        Args:
+            data: Dados de retorno da requisição.
+
+        Returns:
+            Boolean: True para excption e False para sucesso.
+        """
         pass
 
 
@@ -53,6 +75,20 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('wstoken', self.token)
         self.add_param('moodlewsrestformat', self.response_format)
 
+    def check_exception_callback(self, data):
+        """ Verifica se a requisicão gerou alguma exception.
+
+        Args:
+            data: Dados de retorno da requisição.
+
+        Returns:
+            Boolean: True para excption e False para sucesso.
+        """
+        if 'exception' in data.keys():
+            return True
+        else:
+            return False
+            
     def create_user(self, username, password, firstname, lastname, email):
         """Cria um novo usuário no Moodle.
 
@@ -84,9 +120,9 @@ class MoodleWSClient(BaseWSClient, MyABC):
             # response = requests.post(self.url_base, data=self.params)
             self.send_post()
             print(self.status_request())
-            print(self.content_request())
-            print(self.content_request_json())
-            print(self.check_callback(self.content_request_json()))
+            print(self.callback())
+            print(self.callback_json())
+            print(self.check_exception_callback(self.callback_json()))
 
             # if response.status_code == 200 :
             #     print('ok')
@@ -105,12 +141,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
             print(sys.exc_info()[0])
             return sys.exc_info()[0]
-    
-    def check_exception_callback(self, data):
-        if 'exception' in data.keys():
-            return True
-        else:
-            return False
 
 
 class SuapWSClient(BaseWSClient):
@@ -124,6 +154,4 @@ class SuapWSClient(BaseWSClient):
         super(SuapWSClient, self).__init__(url_base, token)
         self.response_format = response_format
 
-    def createUser(self):
-        return 1
     
