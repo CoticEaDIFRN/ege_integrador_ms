@@ -11,6 +11,9 @@ class Campus(models.Model):
     
     label = 'Nome'
     nome = models.CharField(_(label), max_length=100)
+
+    created_at = models.DateTimeField('Criado em', auto_now=True)
+
     
     def __str__(self):
         return self.nome
@@ -18,6 +21,7 @@ class Campus(models.Model):
     class Meta:
         verbose_name = _('Campus')
         verbose_name_plural = _('Campus')
+        ordering = ['nome'] #Ordena o Papel por ordem crescente 'Nome'
 
 
 class Curso(models.Model):
@@ -31,6 +35,8 @@ class Curso(models.Model):
     
     label = 'Nome'
     nome = models.CharField(_(label), max_length=100)
+
+    created_at = models.DateTimeField('Criado em', auto_now=True)
     
     def __str__(self):
         return self.nome
@@ -38,6 +44,7 @@ class Curso(models.Model):
     class Meta:
         verbose_name = _('Curso')
         verbose_name_plural = _('Cursos')
+        ordering = ['nome'] #Ordena o Papel por ordem crescente 'Nome'
 
 
 class Papel(models.Model):
@@ -51,11 +58,15 @@ class Papel(models.Model):
     label = 'Nome'
     nome = models.CharField(_(label), max_length=100)
 
+    created_at = models.DateTimeField('Criado em', auto_now=True)
+
+
     def __str__(self):
         return self.nome
     
     class Meta:
         verbose_name = _('Papel')
         verbose_name_plural = _('Papeis')
+        ordering = ['nome'] #Ordena o Papel por ordem crescente 'Nome'
 
 
