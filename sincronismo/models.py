@@ -9,7 +9,9 @@ class BaseWSClient(object):
         self.token = token
         self.params = {}
         self.resource = None
-        self.response_format = None
+        self.request_format = None
+        self.request_status = None
+        self.request_content = None
         self.response = None
     
     def add_param(self, key, value):
@@ -23,23 +25,13 @@ class BaseWSClient(object):
     
     def send_post(self):
         """ Envia uma requisição do tipo POST. """
-        self.response = requests.post(self.url_base, data=self.params)
+        request = requests.post(self.url_base, data=self.params)
+        self.request_status = request.status_code
+        self.request_content = request.content
     
-    def callback(self):
-        """ Callback da requisição requisição. """
-        return self.response.content
-    
-    def callback_json(self):
+    def request_content_json(self):
         """ Callback da requisição requisição no formato JSON. """
-        return json.loads(self.response.content)
-
-    def status_request(self):
-        """ Status da requisição.
-
-        Returns:
-            Int: Código HTTP da requisição
-        """
-        return self.response.status_code
+        return json.loads(self.request_content)
 
 
 class MyABC(metaclass=abc.ABCMeta):
@@ -76,7 +68,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('moodlewsrestformat', self.response_format)
 
     def check_exception_callback(self, data):
-        """ Verifica se a requisicão gerou alguma exception.
+        """ Verifica se a requisição gerou alguma exception.
 
         Args:
             data: Dados de retorno da requisição.
@@ -107,7 +99,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         """
         self.resource = 'core_user_create_users'
-        
         self.add_param('wsfunction', self.resource)
         self.add_param('users[0][username]', username)
         self.add_param('users[0][password]', password)
@@ -117,12 +108,20 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('users[0][email]', email)
 
         try:
-            # response = requests.post(self.url_base, data=self.params)
             self.send_post()
-            print(self.status_request())
-            print(self.callback())
-            print(self.callback_json())
-            print(self.check_exception_callback(self.callback_json()))
+            print(self.request_status)
+            print(self.request_content)
+            print(self.request_content_json())
+            # response = requests.post(self.url_base, data=self.params)
+            # self.send_post()
+            # if self.status_request() == 200:
+            #     print(self.callback_json())
+            # else:
+                
+                
+                
+            # print(self.callback())
+            # print(self.check_exception_callback(self.callback_json()))
 
             # if response.status_code == 200 :
             #     print('ok')
