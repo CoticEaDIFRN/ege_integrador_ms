@@ -8,11 +8,11 @@ class BaseWSClient(object):
         self.url_base = url_base
         self.token = token
         self.params = {}
-        self.resource = None
+        self.request_resource = None
         self.request_format = None
         self.request_status = None
         self.request_content = None
-        self.response = None
+        self.response = { 'status': 404, 'exception': False, 'data': {} }
     
     def add_param(self, key, value):
         """ Adiciona um novo parâmetro para ser usado na requisição.
@@ -45,7 +45,7 @@ class MyABC(metaclass=abc.ABCMeta):
         """ Verifica se a requisicão gerou alguma exception.
 
         Args:
-            data: Dados de retorno da requisição.
+            data: Dicionário de dados com retorno da requisição.
 
         Returns:
             Boolean: True para excption e False para sucesso.
@@ -59,28 +59,34 @@ class MoodleWSClient(BaseWSClient, MyABC):
         # TODO Colocar em arquivo de configuração da app
         token = "0b0c9af5bd3eba5a6fccbc3d1594376f"
         url_base = 'http://localhost:8080/moodle/webservice/rest/server.php'
-        response_format = 'json'
+        request_format = 'json'
 
         super(MoodleWSClient, self).__init__(url_base, token)
-        self.response_format = response_format
-
+        self.request_format = request_format
         self.add_param('wstoken', self.token)
-        self.add_param('moodlewsrestformat', self.response_format)
+        self.add_param('moodlewsrestformat', self.request_format)
 
-    def check_exception_callback(self, data):
+    def check_exception_callback(self):
         """ Verifica se a requisição gerou alguma exception.
 
         Args:
-            data: Dados de retorno da requisição.
+            data: Dicionário de dados com retorno da requisição.
 
         Returns:
             Boolean: True para excption e False para sucesso.
         """
-        if 'exception' in data.keys():
-            return True
-        else:
-            return False
-            
+        data = self.request_content_json()
+        if isinstance(data, dict):
+            if 'exception' in data.keys():
+                return True
+            else:
+                return False
+        elif isinstance(data, list):
+            if 'exception' in data[0].keys():
+                return True
+            else:
+                return False
+
     def create_user(self, username, password, firstname, lastname, email):
         """Cria um novo usuário no Moodle.
 
@@ -91,15 +97,14 @@ class MoodleWSClient(BaseWSClient, MyABC):
             lastname: Último nome do novo usuário.
             email: E-mail do novo usuário.
         Returns:
-            404: Página não encontrada
-            ID do usuário no Moodle.
+            json: Status: Código http de resposta.
+                  Exception: Se existe exception na requisição.
+                  Data: Dados gerados pela requisição.
         Raises:
-            TypeError: if n is not a number.
-            ValueError: if n is negative.
 
         """
-        self.resource = 'core_user_create_users'
-        self.add_param('wsfunction', self.resource)
+        self.request_resource = 'core_user_create_users'
+        self.add_param('wsfunction', self.request_resource)
         self.add_param('users[0][username]', username)
         self.add_param('users[0][password]', password)
         self.add_param('users[0][createpassword]', 1)
@@ -109,48 +114,17 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         try:
             self.send_post()
-            print(self.request_status)
-            print(self.request_content)
-            print(self.request_content_json())
-            # response = requests.post(self.url_base, data=self.params)
-            # self.send_post()
-            # if self.status_request() == 200:
-            #     print(self.callback_json())
-            # else:
-                
-                
-                
-            # print(self.callback())
-            # print(self.check_exception_callback(self.callback_json()))
-
-            # if response.status_code == 200 :
-            #     print('ok')
-            # else:
-            #     print('erro')
-            # content = self.get_content_json(response.content)
-            # print(response.status_code)
-            # print(content)
-            # print('aki')
-        #     if(response.status_code == 200 & self.requestException(content) == False):
-        #         print({ 'request': False, 'error': False, 'data': content[0] })
-        #     elif (response.status_code == 200):
-        #         print({ 'request': False, 'error': True, 'data': content })
-        #     else:
-        #         print({ 'request': True, 'code': response.status_code })
+            self.response['status'] = self.request_status
+            self.response['exception'] = self.check_exception_callback()
+            self.response['data'] = self.request_content_json()
+            return json.dumps(self.response)
         except:
-            print(sys.exc_info()[0])
             return sys.exc_info()[0]
 
 
 class SuapWSClient(BaseWSClient):
     
     def __init__(self):
-        # TODO Colocar em arquivo de configuração da app
-        token = "0b0c9af5bd3eba5a6fccbc3d1594376f"
-        url_base = 'http://localhost:8080/moodle/webservice/rest/server.php'
-        response_format = 'json'
-
-        super(SuapWSClient, self).__init__(url_base, token)
-        self.response_format = response_format
+        pass
 
     
