@@ -6,5 +6,5 @@ urlpatterns = [
     # path('campus/', include('campus.urls')),
     # path('papeis/', include('papeis.urls')),
     path('admin/', admin.site.urls),
-
+    path('api-v1/', include('sincronismo.urls')),
 ]

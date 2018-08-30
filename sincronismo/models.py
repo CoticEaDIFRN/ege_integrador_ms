@@ -136,7 +136,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('users[0][email]', email)
 
         try:
-            self.send_post() 
+            self.send_post()
             return self.get_response()
         except:
             return sys.exc_info()[0]
