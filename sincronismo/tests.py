@@ -69,7 +69,7 @@ class MoodleModelTests(TestCase):
         """
         model = MoodleWSClient()
         response = model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
-        self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 29, "username": "ptest"}]}')
+        self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 31, "username": "ptest"}]}')
 
 class SuapModelTests(TestCase):
     

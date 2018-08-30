@@ -52,6 +52,16 @@ class MyABC(metaclass=abc.ABCMeta):
         """
         pass
 
+    @abc.abstractmethod
+    def get_response(self):
+        """ Retorna resposta da requisição no formato JSON.
+
+        json: Status: Código http de resposta.
+              Exception: Se existe exception na requisição.
+              Data: Dados gerados pela requisição.
+        """
+        pass
+
 
 class MoodleWSClient(BaseWSClient, MyABC):
 
@@ -87,6 +97,19 @@ class MoodleWSClient(BaseWSClient, MyABC):
             else:
                 return False
 
+    def get_response(self):
+        """ Retorna resposta da requisição no formato JSON.
+
+        json: Status: Código http de resposta.
+              Exception: Se existe exception na requisição.
+              Data: Dados gerados pela requisição.
+        """
+        self.response['status'] = self.request_status
+        self.response['exception'] = self.check_exception_callback()
+        self.response['data'] = self.request_content_json()
+        
+        return json.dumps(self.response)
+
     def create_user(self, username, password, firstname, lastname, email):
         """Cria um novo usuário no Moodle.
 
@@ -113,11 +136,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('users[0][email]', email)
 
         try:
-            self.send_post()
-            self.response['status'] = self.request_status
-            self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_content_json()
-            return json.dumps(self.response)
+            self.send_post() 
+            return self.get_response()
         except:
             return sys.exc_info()[0]
 
@@ -126,5 +146,3 @@ class SuapWSClient(BaseWSClient):
     
     def __init__(self):
         pass
-
-    
