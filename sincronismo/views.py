@@ -17,3 +17,12 @@ def create_user_moodle(request):
         return HttpResponse(response)
     else:
         raise Http404()
+
+def find_user_moodle(request):
+    if request.method == "GET":
+        username = request.GET['username']
+        model = MoodleWSClient()
+        response = model.find_user(username)
+        return HttpResponse(response)
+    else:
+        raise Http404()

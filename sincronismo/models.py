@@ -29,6 +29,12 @@ class BaseWSClient(object):
         self.request_status = request.status_code
         self.request_content = request.content
     
+    def send_get(self):
+        """ Envia uma requisição do tipo GET. """
+        request = requests.get(self.url_base, data=self.params)
+        self.request_status = request.status_code
+        self.request_content = request.content
+
     def request_content_json(self):
         """ Callback da requisição requisição no formato JSON. """
         return json.loads(self.request_content)
@@ -38,6 +44,10 @@ class MyABC(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
     def create_user(self):
+        pass
+
+    @abc.abstractmethod
+    def find_user(self, field):
         pass
 
     @abc.abstractmethod
@@ -104,9 +114,13 @@ class MoodleWSClient(BaseWSClient, MyABC):
               Exception: Se existe exception na requisição.
               Data: Dados gerados pela requisição.
         """
-        self.response['status'] = self.request_status
-        self.response['exception'] = self.check_exception_callback()
-        self.response['data'] = self.request_content_json()
+        if self.request_status == 200:
+            self.response['status'] = self.request_status
+            self.response['exception'] = self.check_exception_callback()
+            self.response['data'] = self.request_content_json()
+        else:
+            pass
+            # self.response['status'] = self.request_status
         
         return json.dumps(self.response)
 
@@ -140,6 +154,18 @@ class MoodleWSClient(BaseWSClient, MyABC):
             return self.get_response()
         except:
             return sys.exc_info()[0]
+    
+    def find_user(self, username):
+        self.request_resource = 'core_user_get_users_by_field'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('field', 'username')
+        self.add_param('values[0]', username)
+        
+        #try:
+        self.send_get()
+        return self.get_response()
+        #except:
+        #    return sys.exc_info()[0]
 
 
 class SuapWSClient(BaseWSClient):
