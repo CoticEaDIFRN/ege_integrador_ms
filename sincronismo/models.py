@@ -21,7 +21,7 @@ class BaseWSClient(object):
             key: Parametro.
             value: Valor do parâmetro.
         """
-        self.params[key] = value    
+        self.params[key] = value
     
     def send_post(self):
         """ Envia uma requisição do tipo POST. """
@@ -31,7 +31,7 @@ class BaseWSClient(object):
     
     def send_get(self):
         """ Envia uma requisição do tipo GET. """
-        request = requests.get(self.url_base, data=self.params)
+        request = requests.get(self.url_base, params=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
 
@@ -95,7 +95,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         Returns:
             Boolean: True para excption e False para sucesso.
         """
-        data = self.request_content_json()
+        data = self.request_content
         if isinstance(data, dict):
             if 'exception' in data.keys():
                 return True
@@ -119,8 +119,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
             self.response['exception'] = self.check_exception_callback()
             self.response['data'] = self.request_content_json()
         else:
-            pass
-            # self.response['status'] = self.request_status
+            self.response['status'] = self.request_status
         
         return json.dumps(self.response)
 
@@ -161,11 +160,11 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('field', 'username')
         self.add_param('values[0]', username)
         
-        #try:
-        self.send_get()
-        return self.get_response()
-        #except:
-        #    return sys.exc_info()[0]
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
 
 
 class SuapWSClient(BaseWSClient):
