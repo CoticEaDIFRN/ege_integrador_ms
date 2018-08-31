@@ -34,7 +34,7 @@ class BaseWSClient(object):
         request = requests.get(self.url_base, params=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
-
+        
     def request_content_json(self):
         """ Callback da requisição requisição no formato JSON. """
         return json.loads(self.request_content)
@@ -47,7 +47,7 @@ class MyABC(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def find_user(self, field):
+    def create_course(self):# CRIA O CURSO
         pass
 
     @abc.abstractmethod
@@ -59,16 +59,6 @@ class MyABC(metaclass=abc.ABCMeta):
 
         Returns:
             Boolean: True para excption e False para sucesso.
-        """
-        pass
-
-    @abc.abstractmethod
-    def get_response(self):
-        """ Retorna resposta da requisição no formato JSON.
-
-        json: Status: Código http de resposta.
-              Exception: Se existe exception na requisição.
-              Data: Dados gerados pela requisição.
         """
         pass
 
@@ -150,16 +140,22 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         try:
             self.send_post()
-            return self.get_response()
+            self.response['status'] = self.request_status
+            self.response['exception'] = self.check_exception_callback()
+            self.response['data'] = self.request_content_json()
+            return json.dumps(self.response)
         except:
             return sys.exc_info()[0]
-    
-    def find_user(self, username):
-        self.request_resource = 'core_user_get_users_by_field'
-        self.add_param('wsfunction', self.request_resource)
-        self.add_param('field', 'username')
-        self.add_param('values[0]', username)
+
+
+    def create_course(self, request_resource, fullname, shortname, categoryid):
         
+        self.request_resource = 'core_course_create_courses'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('courses[0][fullname]', fullname)
+        self.add_param('courses[0][shortname]', shortname)
+        self.add_param('courses[0][categoryid]', categoryid)
+
         try:
             self.send_get()
             return self.get_response()
@@ -171,3 +167,5 @@ class SuapWSClient(BaseWSClient):
     
     def __init__(self):
         pass
+
+    

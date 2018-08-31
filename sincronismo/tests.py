@@ -59,7 +59,7 @@ class MoodleModelTests(TestCase):
         Verifica se o objeto tem o comportamento padrão esperado.
         """
         model = MoodleWSClient()
-        self.assertEqual(model.url_base, 'http://localhost:8080/moodle/webservice/rest/server.php')
+        self.assertEqual(model.url_base, 'http://localhost:8080/moodle/webservice/rest/server.php') #TRANSFORMAR EM UMA VARIÁVEL
         self.assertEqual(model.token, '0b0c9af5bd3eba5a6fccbc3d1594376f')
         self.assertEqual(model.request_format, 'json')
     
@@ -70,6 +70,11 @@ class MoodleModelTests(TestCase):
         model = MoodleWSClient()
         response = model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
         self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 31, "username": "ptest"}]}')
+
+    def test_create_courses(self):
+        model = MoodleWSClient()
+        response = model.create_course('Ptest','ptest','1')
+        self.assertEqual(response, "status": 200, "exception": false, "data")
 
 class SuapModelTests(TestCase):
     
