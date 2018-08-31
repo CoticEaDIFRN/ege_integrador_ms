@@ -116,18 +116,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('users[0][lastname]', lastname)
         self.add_param('users[0][email]', email)
 
-        
-
-    
-    def create_course(self, request_resource, fullname, shortname, categoryid):
-        
-        self.request_resource = 'core_course_create_courses'
-        self.add_param('wsfunction', self.request_resource)
-        self.add_param('courses[0][fullname]', fullname)
-        self.add_param('courses[0][shortname]', shortname)
-        self.add_param('courses[0][categoryid]', categoryid)
-
-        
         try:
             self.send_post()
             self.response['status'] = self.request_status
@@ -138,8 +126,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
             return sys.exc_info()[0]
 
 
-
-   """
     def create_course(self, request_resource, fullname, shortname, categoryid):
         
         self.request_resource = 'core_course_create_courses'
@@ -147,17 +133,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('courses[0][fullname]', fullname)
         self.add_param('courses[0][shortname]', shortname)
         self.add_param('courses[0][categoryid]', categoryid)
-        
-        try:
-            self.send_post()
-            self.response['status'] = self.request_status
-            self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_content_json()
-            return json.dumps(self.response)
-        except:
-            return sys.exc_info()[0]
-    """
-
 
 
 class SuapWSClient(BaseWSClient):
