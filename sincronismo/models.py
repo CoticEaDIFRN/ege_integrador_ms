@@ -34,7 +34,7 @@ class BaseWSClient(object):
         request = requests.get(self.url_base, params=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
-        
+
     def request_content_json(self):
         """ Callback da requisição requisição no formato JSON. """
         return json.loads(self.request_content)
@@ -44,6 +44,10 @@ class MyABC(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
     def create_user(self):
+        pass
+
+    @abc.abstractmethod
+    def find_user(self, field):
         pass
 
     @abc.abstractmethod
@@ -147,6 +151,17 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
             return sys.exc_info()[0]
 
+    def find_user(self, username):
+        self.request_resource = 'core_user_get_users_by_field'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('field', 'username')
+        self.add_param('values[0]', username)
+
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
 
     def create_course(self, request_resource, fullname, shortname, categoryid):
         
@@ -157,7 +172,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('courses[0][categoryid]', categoryid)
 
         try:
-            self.send_get()
+            self.send_post()
             return self.get_response()
         except:
            return sys.exc_info()[0]
