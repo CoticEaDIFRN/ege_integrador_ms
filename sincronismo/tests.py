@@ -63,7 +63,7 @@ class MoodleModelTests(TestCase):
         self.assertEqual(model.token, '0b0c9af5bd3eba5a6fccbc3d1594376f')
         self.assertEqual(model.request_format, 'json')
     
-    def teste_criacao_de_usuario(self):
+    def teste_create_user(self):
         """
         Testa criação de usuário no moodle.
         """
@@ -74,7 +74,7 @@ class MoodleModelTests(TestCase):
     def test_create_courses(self):
         model = MoodleWSClient()
         response = model.create_course('Ptest','ptest','1')
-        self.assertEqual(response, "status": 200, "exception": false, "data")
+        self.assertEqual(response, '{"status": 200, "exception": false, "data"}')
 
 class SuapModelTests(TestCase):
     
