@@ -8,50 +8,44 @@ import json, requests
 
 class BaseWSClientModelTests(TestCase):
     
-    # def setUp(self):
-    #     base = Base('http://localhost:8000', 'abcdefghijlmnopqrstuvxz', 'get_users')
+    def setUp(self):
+        self.base = BaseWSClient('http://localhost:8000', 'abcdefghijlmnopqrstuvxz')
+        self.base.add_param('param1', 10)
+        self.base.add_param('param2', 'test')
 
     def test_init(self):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
-        base = BaseWSClient('http://localhost:8000', 'abcdefghijlmnopqrstuvxz')
-        self.assertEqual(base.url_base, 'http://localhost:8000')
-        self.assertEqual(base.token, 'abcdefghijlmnopqrstuvxz')
+        self.assertEqual(self.base.url_base, 'http://localhost:8000')
+        self.assertEqual(self.base.token, 'abcdefghijlmnopqrstuvxz')
 
     def test_add_param(self):
         """
         Verifica se o objeto tem o comportamento esperado quando atribuido
         algum valor ao dicionario data.
         """
-        base = BaseWSClient('http://localhost', 'test')
-        self.assertEqual(base.params, {})
         
-        base.add_param('param1', 10)
-        self.assertEqual(base.params, {'param1': 10})
-
-        base.add_param('param2', 'test')
-        self.assertEqual(base.params, {'param1': 10, 'param2': 'test'})
+        self.assertEqual(self.base.params, {'param1': 10, 'param2': 'test'})
 
     def test_resource(self):
         """
         Verifica se o objeto tem o comportamento esperado quando atribuido
         algum recurso a ele.
         """
-        base = BaseWSClient('http://localhost', 'test')
-        base.resource = 'get_users'
-        self.assertEqual(base.resource, 'get_users')
+        self.base.resource = 'get_users'
+        self.assertEqual(self.base.resource, 'get_users')
         
 
 class MoodleWSClientModelTests(TestCase):
+
+    def setUp(self):
+        self.model = MoodleWSClient()
 
     def test_init(self):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
-        model = MoodleWSClient()
-        self.assertEqual(model.url_base, 'http://localhost:8080/moodle/webservice/rest/server.php') #TRANSFORMAR EM UMA VARIÁVEL
-        self.assertEqual(model.token, '0b0c9af5bd3eba5a6fccbc3d1594376f')
         self.assertEqual(model.request_format, 'json')
     
     def test_create_user(self):
