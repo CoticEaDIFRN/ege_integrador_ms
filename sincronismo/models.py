@@ -12,7 +12,7 @@ class BaseWSClient(object):
         self.request_format = None
         self.request_status = None
         self.request_content = None
-        self.response = { 'status': 404, 'exception': False, 'data': {} }
+        self.response = { 'status': 404, 'exception': False, 'data': None }
     
     def add_param(self, key, value):
         """ Adiciona um novo parâmetro para ser usado na requisição.
@@ -89,7 +89,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         Returns:
             Boolean: True para excption e False para sucesso.
         """
-        data = self.request_content
+        data = self.request_content_json()
         if isinstance(data, dict):
             if 'exception' in data.keys():
                 return True
