@@ -63,7 +63,7 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(model.token, '0b0c9af5bd3eba5a6fccbc3d1594376f')
         self.assertEqual(model.request_format, 'json')
     
-    def teste_create_user(self):
+    def test_create_user(self):
         """
         Testa criação de usuário no moodle.
         """
@@ -78,7 +78,7 @@ class MoodleWSClientModelTests(TestCase):
 
 class SuapModelTests(TestCase):
     
-    def teste_init(self):
+    def test_init(self):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
