@@ -52,9 +52,9 @@ class BaseModelTests(TestCase):
         self.assertEqual(base.params, {'param1': 10, 'param2': 'test'})
         
 
-class MoodleModelTests(TestCase):
+class MoodleWSClientModelTests(TestCase):
 
-    def teste_de_sanidade(self):
+    def test_init(self):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
@@ -78,7 +78,7 @@ class MoodleModelTests(TestCase):
 
 class SuapModelTests(TestCase):
     
-    def teste_de_sanidade(self):
+    def teste_init(self):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
