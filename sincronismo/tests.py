@@ -6,38 +6,20 @@ from .models import SuapWSClient
 
 import json, requests
 
-class BaseModelTests(TestCase):
+class BaseWSClientModelTests(TestCase):
     
     # def setUp(self):
     #     base = Base('http://localhost:8000', 'abcdefghijlmnopqrstuvxz', 'get_users')
 
-    def test_de_sanidade(self):
+    def test_init(self):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
         base = BaseWSClient('http://localhost:8000', 'abcdefghijlmnopqrstuvxz')
         self.assertEqual(base.url_base, 'http://localhost:8000')
         self.assertEqual(base.token, 'abcdefghijlmnopqrstuvxz')
-    
-    def test_resource(self):
-        """
-        Verifica se o objeto tem o comportamento esperado quando atribuido
-        algum recurso a ele.
-        """
-        base = BaseWSClient('http://localhost', 'test')
-        base.resource = 'get_users'
-        self.assertEqual(base.resource, 'get_users')
-    
-    def test_response_format(self):
-        """
-        Verifica se o objeto tem o comportamento esperado quando atribuido
-        algum formato de resposta a ele.
-        """
-        base = BaseWSClient('http://localhost', 'test')
-        base.response_format = 'json'
-        self.assertEqual(base.response_format, 'json')
 
-    def test_data(self):
+    def test_add_param(self):
         """
         Verifica se o objeto tem o comportamento esperado quando atribuido
         algum valor ao dicionario data.
@@ -50,6 +32,15 @@ class BaseModelTests(TestCase):
 
         base.add_param('param2', 'test')
         self.assertEqual(base.params, {'param1': 10, 'param2': 'test'})
+
+    def test_resource(self):
+        """
+        Verifica se o objeto tem o comportamento esperado quando atribuido
+        algum recurso a ele.
+        """
+        base = BaseWSClient('http://localhost', 'test')
+        base.resource = 'get_users'
+        self.assertEqual(base.resource, 'get_users')
         
 
 class MoodleWSClientModelTests(TestCase):
@@ -76,7 +67,7 @@ class MoodleWSClientModelTests(TestCase):
         response = model.create_course('Ptest','ptest','1')
         self.assertEqual(response, '{"status": 200, "exception": false, "data"}')
 
-class SuapModelTests(TestCase):
+class SuapWSClientModelTests(TestCase):
     
     def test_init(self):
         """
