@@ -26,3 +26,14 @@ def find_user_moodle(request):
         return HttpResponse(response)
     else:
         raise Http404()
+
+def create_course(request):
+    if request.method == "POST":
+        fullname = request.GET['fullname']
+        shortname = request.GET['shortname']
+        categoryid = request.GET['categoryid']
+        model = MoodleWSClient
+        response = model.create_course(fullname, shortname, categoryid)
+        return HttpResponse(response)
+    else:
+        raise Http404()
