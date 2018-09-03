@@ -25,7 +25,6 @@ class BaseWSClientModelTests(TestCase):
         Verifica se o objeto tem o comportamento esperado quando atribuido
         algum valor ao dicionario data.
         """
-        
         self.assertEqual(self.base.params, {'param1': 10, 'param2': 'test'})
 
     def test_resource(self):
@@ -46,15 +45,52 @@ class MoodleWSClientModelTests(TestCase):
         """
         Verifica se o objeto tem o comportamento padrão esperado.
         """
-        self.assertEqual(model.request_format, 'json')
+        self.assertEqual(self.model.request_format, 'json')
     
     def test_create_user(self):
         """
         Testa criação de usuário no moodle.
         """
-        model = MoodleWSClient()
-        response = model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
-        self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 31, "username": "ptest"}]}')
+        response = self.model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
+        r_json = self.model.request_content_json()
+
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json[0]['username'], 'ptest')
+
+    def test_create_user_exception(self):
+        """
+        Testa falha criação de usuário no moodle.
+        """
+        response = self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
+        r_json = self.model.request_content_json()
+
+        self.assertTrue(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json['exception'], 'invalid_parameter_exception')
+    
+    def test_find_user(self):
+        """
+        Testa busca de usuário no moodle.
+        """
+        response = self.model.find_user('ptest')
+        r_json = self.model.request_content_json()
+
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json[0]['username'], 'ptest')
+        self.assertEqual(r_json[0]['firstname'], 'python')
+
+    def test_find_user_no_exist(self):
+        """
+        Testa falha na busca de usuário no moodle.
+        """
+        response = self.model.find_user('naoexiste')
+        r_json = self.model.request_content_json()
+
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json, [])
 
     def test_create_courses(self):
         model = MoodleWSClient()
