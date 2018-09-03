@@ -37,3 +37,15 @@ def create_course(request):
         return HttpResponse(response)
     else:
         raise Http404()
+
+def create_category(request):
+    if request.method == "POST":
+        name = request.GET['name']
+        description = request.GET['description']
+        model = MoodleWSClient
+        response = model.create_category(name, description)
+        return HttpResponse(response)
+    else:
+        raise Http404()
+    # FALTA TESTAR ESSA FUNÇÃO!!!
+

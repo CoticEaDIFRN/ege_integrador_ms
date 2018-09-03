@@ -180,6 +180,23 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
             return sys.exc_info()[0]
 
+    def create_category(self, name, description):
+        
+        self.request_resource = 'core_course_create_categories'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('categories[0][name]', name)
+        self.add_param('categories[0][description]', description)
+
+        try:
+            self.send_post()
+            self.response['status'] = self.request_status
+            self.response['exception'] = self.check_exception_callback()
+            self.response['data'] = self.request_content_json()
+            return json.dumps(self.response)
+        except:
+            return sys.exc_info()[0]
+        # FALTA TESTAR ESSA FUNÇÃO!!!
+
 
 class SuapWSClient(BaseWSClient):
     

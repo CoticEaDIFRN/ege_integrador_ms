@@ -76,6 +76,11 @@ class MoodleModelTests(TestCase):
         response = model.create_course('fullname', 'shortname', 'categoryid')
         self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 5, "shortname": "curso1"}]}')
 
+    def test_create_category(self):
+        model = MoodleWSClient()
+        response = model.create_category('name','descriptions')
+        self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 2, "name": "Categoria 1"}]}')
+        # FALTA TESTAR ESSA FUNÇÃO!!!
 
 class SuapModelTests(TestCase):
     
