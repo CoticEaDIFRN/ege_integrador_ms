@@ -18,6 +18,19 @@ def create_user_moodle(request):
     else:
         raise Http404()
 
+def update_user_moodle(request):
+    if request.method == "PUT":
+        id_user = request.GET['id_user']
+        firstname = request.GET['firstname']
+        lastname = request.GET['lastname']
+        email = request.GET['email']
+
+        model = MoodleWSClient()
+        response = model.update_user(id_user, None, firstname, lastname, email)
+        return HttpResponse(response)
+    else:
+        raise Http404()
+
 def find_user_moodle(request):
     if request.method == "GET":
         username = request.GET['username']

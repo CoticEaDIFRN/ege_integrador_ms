@@ -53,7 +53,7 @@ class MoodleWSClientModelTests(TestCase):
         """
         Testa criação de usuário no moodle.
         """
-        response = self.model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
+        self.model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
         r_json = self.model.request_content_json()
 
         self.assertFalse(self.model.response['exception'])
@@ -64,18 +64,29 @@ class MoodleWSClientModelTests(TestCase):
         """
         Testa falha criação de usuário no moodle.
         """
-        response = self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
+        self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
         r_json = self.model.request_content_json()
 
         self.assertTrue(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json['exception'], 'invalid_parameter_exception')
     
+    def test_update_user(self):
+        """
+        Testa atualização de usuário no moodle.
+        """
+        self.model.update_user(2, None, 'Unit', 'Test')
+        r_json = self.model.request_content_json()
+        
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertIsNone(r_json)
+        
     def test_find_user(self):
         """
         Testa busca de usuário no moodle.
         """
-        response = self.model.find_user('ptest')
+        self.model.find_user('ptest')
         r_json = self.model.request_content_json()
 
         self.assertFalse(self.model.response['exception'])
@@ -87,7 +98,7 @@ class MoodleWSClientModelTests(TestCase):
         """
         Testa falha na busca de usuário no moodle.
         """
-        response = self.model.find_user('naoexiste')
+        self.model.find_user('naoexiste')
         r_json = self.model.request_content_json()
 
         self.assertFalse(self.model.response['exception'])

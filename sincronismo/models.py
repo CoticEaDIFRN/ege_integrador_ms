@@ -28,6 +28,12 @@ class BaseWSClient(object):
         request = requests.post(self.url_base, data=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
+
+    def send_put(self):
+        """ Envia uma requisição do tipo POST. """
+        request = requests.put(self.url_base, params=self.params)
+        self.request_status = request.status_code
+        self.request_content = request.content
     
     def send_get(self):
         """ Envia uma requisição do tipo GET. """
@@ -37,7 +43,10 @@ class BaseWSClient(object):
 
     def request_content_json(self):
         """ Callback da requisição requisição no formato JSON. """
-        return json.loads(self.request_content)
+        if self.request_content is None:
+            return json.loads([])
+        else:
+            return json.loads(self.request_content)
 
 
 class MyABC(metaclass=abc.ABCMeta):
@@ -48,6 +57,10 @@ class MyABC(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def find_user(self, field):
+        pass
+
+    @abc.abstractmethod
+    def update_user(self):
         pass
 
     @abc.abstractmethod
@@ -100,6 +113,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
                 return True
             else:
                 return False
+        else:
+            return False
 
     def get_response(self):
         """ Retorna resposta da requisição no formato JSON.
@@ -144,12 +159,30 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         try:
             self.send_post()
-            self.response['status'] = self.request_status
-            self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_content_json()
-            return json.dumps(self.response)
+            return self.get_response()
         except:
             return sys.exc_info()[0]
+    
+    def update_user(self, id_user, username=None, firstname=None, lastname=None, email=None):
+        
+        self.request_resource = 'core_user_update_users'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('users[0][id]', id_user)
+        
+        if username is not None:
+            self.add_param('users[0][username]', username)
+        if firstname is not None:
+            self.add_param('users[0][firstname]', firstname)
+        if lastname is not None:
+            self.add_param('users[0][lastname]', lastname)
+        if email is not None:
+            self.add_param('users[0][email]', email)
+
+        try:
+            self.send_put()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
 
     def find_user(self, username):
         self.request_resource = 'core_user_get_users_by_field'
