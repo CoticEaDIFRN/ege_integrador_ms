@@ -160,6 +160,29 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json['exception'], 'moodle_exception')
         self.assertEqual(r_json['errorcode'], 'wsusercannotassign')
+    
+    def test_get_enrolled_users_in_course(self):
+        """
+        Retorna lista de usuários associados curso do moodle.
+        """
+        self.model.get_enrolled_users_in_course(2)
+        r_json = self.model.request_json
+
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json[0]['id'], 2)
+
+    def test_get_enrolled_users_in_course_no_exist(self):
+        """
+        Retorna lista de usuários associados curso do moodle.
+        """
+        self.model.get_enrolled_users_in_course(20000)
+        r_json = self.model.request_json
+
+        self.assertTrue(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json['exception'], 'dml_missing_record_exception')
+        self.assertEqual(r_json['errorcode'], 'invalidrecord')
 
     def test_create_course(self):
         self.model.create_course('Curso_1', 'curso1', 1)

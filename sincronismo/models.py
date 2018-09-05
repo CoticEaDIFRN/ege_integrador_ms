@@ -222,6 +222,17 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
            return sys.exc_info()[0]
 
+    def get_enrolled_users_in_course(self, course_id):
+        self.request_resource = 'core_enrol_get_enrolled_users'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('courseid', course_id)
+
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
+
     def create_course(self, fullname, shortname, categoryid):
         self.request_resource = 'core_course_create_courses'
         self.add_param('wsfunction', self.request_resource)
