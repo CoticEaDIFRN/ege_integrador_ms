@@ -12,6 +12,7 @@ class BaseWSClient(object):
         self.request_format = None
         self.request_status = None
         self.request_content = None
+        self.request_json = None
         self.response = { 'status': 404, 'exception': False, 'data': None }
     
     def add_param(self, key, value):
@@ -28,25 +29,21 @@ class BaseWSClient(object):
         request = requests.post(self.url_base, data=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
+        self.request_json = request.json()
 
     def send_put(self):
         """ Envia uma requisição do tipo POST. """
         request = requests.put(self.url_base, params=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
+        self.request_json = request.json()
     
     def send_get(self):
         """ Envia uma requisição do tipo GET. """
         request = requests.get(self.url_base, params=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
-
-    def request_content_json(self):
-        """ Callback da requisição requisição no formato JSON. """
-        if self.request_content is None:
-            return json.loads('[]')
-        else:
-            return json.loads(self.request_content)
+        self.request_json = request.json()
 
 
 class MyABC(metaclass=abc.ABCMeta):
@@ -114,7 +111,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         Returns:
             Boolean: True para excption e False para sucesso.
         """
-        data = self.request_content_json()
+        data = self.request_json
         if isinstance(data, dict):
             if 'exception' in data.keys():
                 return True
@@ -138,7 +135,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         if self.request_status == 200:
             self.response['status'] = self.request_status
             self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_content_json()
+            self.response['data'] = self.request_json
         else:
             self.response['status'] = self.request_status
         
@@ -217,10 +214,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         
         try:
             self.send_post()
-            self.response['status'] = self.request_status
-            self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_content_json()
-            return json.dumps(self.response)
+            return self.get_response()
         except:
             return sys.exc_info()[0]
 
@@ -236,7 +230,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
            return sys.exc_info()[0]
 
-    def create_category(self, name, description):# FALTA COLOCAR UMA VARIÁVEL AQUI
+    def create_category(self, name, description):
         
         self.request_resource = 'core_course_create_categories'
         self.add_param('wsfunction', self.request_resource)
@@ -245,11 +239,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         try:
             self.send_post()
-            self.response['status'] = self.request_status
-            self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_content_json()
-            
-            return json.dumps(self.response)
+            return self.get_response()
         except:
             return sys.exc_info()[0]
 
