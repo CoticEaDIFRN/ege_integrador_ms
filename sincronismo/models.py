@@ -60,19 +60,23 @@ class MyABC(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-<<<<<<< HEAD
-    def create_course(self):
-        pass
-
-    @abc.abstractmethod
-    def create_category(self):
-=======
     def update_user(self):
         pass
 
     @abc.abstractmethod
-    def create_course(self):# CRIA O CURSO
->>>>>>> 572197f18d1720457e1eeb98b6d3724a99938466
+    def create_course(self):
+        pass
+
+    @abc.abstractmethod
+    def find_course(self):
+        pass
+
+    @abc.abstractmethod
+    def create_category(self):
+        pass
+
+    @abc.abstractmethod
+    def find_category(self):
         pass
 
     @abc.abstractmethod
@@ -232,7 +236,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
            return sys.exc_info()[0]
 
-    def create_category(self, name, description):
+    def create_category(self, name, description):# FALTA COLOCAR UMA VARIÁVEL AQUI
         
         self.request_resource = 'core_course_create_categories'
         self.add_param('wsfunction', self.request_resource)

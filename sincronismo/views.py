@@ -45,6 +45,7 @@ def create_course(request):
         fullname = request.GET['fullname']
         shortname = request.GET['shortname']
         categoryid = request.GET['categoryid']
+
         model = MoodleWSClient
         response = model.create_course(fullname, shortname, categoryid)
         return HttpResponse(response)
@@ -64,6 +65,7 @@ def create_category(request):
     if request.method == "POST":
         name = request.GET['name']
         description = request.GET['description']
+        
         model = MoodleWSClient
         response = model.create_category(name, description)
         return HttpResponse(response)

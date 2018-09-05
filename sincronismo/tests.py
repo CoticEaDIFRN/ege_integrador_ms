@@ -106,8 +106,9 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(r_json, [])
     
     def test_create_course(self):
-        self.model.create_course('Curso 1', 'curso1', 1)
+        self.model.create_course('Curso_1', 'curso1', 1)
         r_json = self.model.request_content_json()
+
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['categoryid'], 1)
@@ -117,6 +118,7 @@ class MoodleWSClientModelTests(TestCase):
     def test_create_category(self):
         self.model.create_category( 1, 'Categoria 1', 'Teste da criação da Categoria 1')
         r_json = self.model.request_content_json()
+        
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['name'], 'Categoria 1')
