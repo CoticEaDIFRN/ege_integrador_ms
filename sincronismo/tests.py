@@ -71,6 +71,17 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json['exception'], 'invalid_parameter_exception')
     
+    def test_update_user(self):
+        """
+        Testa atualização de usuário no moodle.
+        """
+        self.model.update_user(2, None, 'Unit', 'Test')
+        r_json = self.model.request_content_json()
+        
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertIsNone(r_json)
+        
     def test_find_user(self):
         """
         Testa busca de usuário no moodle.
