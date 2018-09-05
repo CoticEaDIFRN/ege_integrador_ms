@@ -51,7 +51,11 @@ class MyABC(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def create_course(self):# CRIA O CURSO
+    def create_course(self):
+        pass
+
+    @abc.abstractmethod
+    def create_category(self):
         pass
 
     @abc.abstractmethod
@@ -164,13 +168,12 @@ class MoodleWSClient(BaseWSClient, MyABC):
            return sys.exc_info()[0]
 
     def create_course(self, fullname, shortname, categoryid):
-        
         self.request_resource = 'core_course_create_courses'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('courses[0][fullname]', fullname)
         self.add_param('courses[0][shortname]', shortname)
         self.add_param('courses[0][categoryid]', categoryid)
-
+        
         try:
             self.send_post()
             self.response['status'] = self.request_status
@@ -179,6 +182,18 @@ class MoodleWSClient(BaseWSClient, MyABC):
             return json.dumps(self.response)
         except:
             return sys.exc_info()[0]
+
+    def find_course(self, shortname ):
+        self.request_resource = 'core_course_get_courses_by_field'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('field', 'shortname')
+        self.add_param('values[0]', shortname)
+
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
 
     def create_category(self, name, description):
         
@@ -192,10 +207,22 @@ class MoodleWSClient(BaseWSClient, MyABC):
             self.response['status'] = self.request_status
             self.response['exception'] = self.check_exception_callback()
             self.response['data'] = self.request_content_json()
+            
             return json.dumps(self.response)
         except:
             return sys.exc_info()[0]
-        # FALTA TESTAR ESSA FUNÇÃO!!!
+
+    def find_category(self, name ):
+        self.request_resource = 'core_course_get_categories'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('field', 'name')
+        self.add_param('values[0]', name)
+
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
 
 
 class SuapWSClient(BaseWSClient):

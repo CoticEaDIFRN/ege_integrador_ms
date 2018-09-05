@@ -37,7 +37,7 @@ class BaseWSClientModelTests(TestCase):
         
 
 class MoodleWSClientModelTests(TestCase):
-
+    
     def setUp(self):
         self.model = MoodleWSClient()
 
@@ -53,18 +53,18 @@ class MoodleWSClientModelTests(TestCase):
         """
         Testa criação de usuário no moodle.
         """
-        response = self.model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
+        self.model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
         r_json = self.model.request_content_json()
 
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['username'], 'ptest')
-
+    
     def test_create_user_exception(self):
         """
         Testa falha criação de usuário no moodle.
         """
-        response = self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
+        self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
         r_json = self.model.request_content_json()
 
         self.assertTrue(self.model.response['exception'])
@@ -75,7 +75,7 @@ class MoodleWSClientModelTests(TestCase):
         """
         Testa busca de usuário no moodle.
         """
-        response = self.model.find_user('ptest')
+        self.model.find_user('ptest')
         r_json = self.model.request_content_json()
 
         self.assertFalse(self.model.response['exception'])
@@ -87,23 +87,29 @@ class MoodleWSClientModelTests(TestCase):
         """
         Testa falha na busca de usuário no moodle.
         """
-        response = self.model.find_user('naoexiste')
+        self.model.find_user('naoexiste')
         r_json = self.model.request_content_json()
 
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json, [])
-
-    def test_create_courses(self):
-        model = MoodleWSClient()
-        response = model.create_course('fullname', 'shortname', 'categoryid')
-        self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 5, "shortname": "curso1"}]}')
-
+    
+    def test_create_course(self):
+        self.model.create_course('Curso 1', 'curso1', 1)
+        r_json = self.model.request_content_json()
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json[0]['categoryid'], 1)
+        self.assertEqual(r_json[0]['shortname'], 'curso1')
+        
+    
     def test_create_category(self):
-        model = MoodleWSClient()
-        response = model.create_category('name','descriptions')
-        self.assertEqual(response, '{"status": 200, "exception": false, "data": [{"id": 2, "name": "Categoria 1"}]}')
-        # FALTA TESTAR ESSA FUNÇÃO!!!
+        self.model.create_category( 1, 'Categoria 1', 'Teste da criação da Categoria 1')
+        r_json = self.model.request_content_json()
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json[0]['name'], 'Categoria 1')
+    
 
 class SuapWSClientModelTests(TestCase):
     
