@@ -79,6 +79,17 @@ class MoodleWSClientModelTests(TestCase):
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertIsNone(r_json)
+
+    def test_update_user_no_exist(self):
+        """
+        Testa atualização de usuário que não existe no moodle.
+        """
+        self.model.update_user(7000, None, 'Unit', 'Test')
+        r_json = self.model.request_json
+        
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertIsNone(r_json)
         
     def test_find_user(self):
         """
@@ -103,6 +114,53 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json, [])
     
+    def test_enrol_user(self):
+        """
+        Associa usuário a um curso do moodle.
+        """
+        self.model.enrol_user(2, 2, 3)
+        r_json = self.model.request_json
+
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertIsNone(r_json)
+
+    def test_enrol_user_no_exist(self):
+        """
+        Associa usuário a um curso do moodle.
+        """
+        self.model.enrol_user(7000, 2, 3)
+        r_json = self.model.request_json
+
+        self.assertTrue(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json['exception'], 'coding_exception')
+        self.assertEqual(r_json['errorcode'], 'codingerror')
+
+    def test_enrol_user_course_no_exist(self):
+        """
+        Associa usuário a um curso do moodle.
+        """
+        self.model.enrol_user(2, 7000, 3)
+        r_json = self.model.request_json
+
+        self.assertTrue(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json['exception'], 'invalid_parameter_exception')
+        self.assertEqual(r_json['errorcode'], 'invalidparameter')
+    
+    def test_enrol_user_role_no_exist(self):
+        """
+        Associa usuário a um curso do moodle.
+        """
+        self.model.enrol_user(2, 2, 30000)
+        r_json = self.model.request_json
+
+        self.assertTrue(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json['exception'], 'moodle_exception')
+        self.assertEqual(r_json['errorcode'], 'wsusercannotassign')
+
     def test_create_course(self):
         self.model.create_course('Curso_1', 'curso1', 1)
         r_json = self.model.request_json

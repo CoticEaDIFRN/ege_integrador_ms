@@ -61,6 +61,10 @@ class MyABC(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
+    def enrol_user(self):
+        pass
+
+    @abc.abstractmethod
     def create_course(self):
         pass
 
@@ -201,6 +205,19 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         try:
             self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
+    
+    def enrol_user(self, user_id, course_id, role_id):
+        self.request_resource = 'enrol_manual_enrol_users'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('enrolments[0][courseid]', course_id)
+        self.add_param('enrolments[0][roleid]', role_id)
+        self.add_param('enrolments[0][userid]', user_id)
+
+        try:
+            self.send_post()
             return self.get_response()
         except:
            return sys.exc_info()[0]
