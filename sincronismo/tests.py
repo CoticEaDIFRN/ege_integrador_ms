@@ -46,8 +46,6 @@ class MoodleWSClientModelTests(TestCase):
         Verifica se o objeto tem o comportamento padrão esperado.
         """
         self.assertEqual(self.model.request_format, 'json')
-        self.assertEqual(self.model.url_base, 'http://localhost:8080/moodle/webservice/rest/server.php')
-        self.assertEqual(self.model.token, '0b0c9af5bd3eba5a6fccbc3d1594376f')
     
     def test_create_user(self):
         """

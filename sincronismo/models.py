@@ -44,7 +44,7 @@ class BaseWSClient(object):
     def request_content_json(self):
         """ Callback da requisição requisição no formato JSON. """
         if self.request_content is None:
-            return json.loads([])
+            return json.loads('[]')
         else:
             return json.loads(self.request_content)
 
