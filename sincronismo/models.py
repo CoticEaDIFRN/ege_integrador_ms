@@ -32,7 +32,7 @@ class BaseWSClient(object):
         self.request_json = request.json()
 
     def send_put(self):
-        """ Envia uma requisição do tipo POST. """
+        """ Envia uma requisição do tipo PUT. """
         request = requests.put(self.url_base, params=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
@@ -50,26 +50,32 @@ class MyABC(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
     def create_user(self):
+        """ Cria um novo usuário """
         pass
 
     @abc.abstractmethod
     def find_user(self, field):
+        """ Busca um usuário """
         pass
 
     @abc.abstractmethod
     def update_user(self):
+        """ Atualiza um novo usuário """
         pass
 
     @abc.abstractmethod
     def enrol_user(self):
+        """ Associa um usuário a uma curso """
         pass
 
     @abc.abstractmethod
     def create_course(self):
+        """ Cria um novo curso """
         pass
 
     @abc.abstractmethod
     def find_course(self):
+        """ Busca um curso """
         pass
     
     @abc.abstractmethod
