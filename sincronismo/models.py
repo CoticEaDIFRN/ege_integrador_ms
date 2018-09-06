@@ -60,7 +60,7 @@ class MyABC(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def update_user(self):
-        """ Atualiza um novo usuário """
+        """ Atualiza um usuário """
         pass
 
     @abc.abstractmethod
@@ -80,14 +80,22 @@ class MyABC(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
     def update_course(self):
+        """ Atualiza um curso """
         pass
 
     @abc.abstractmethod
     def create_category(self):
+        """ Cria um nova categoria """
         pass
 
     @abc.abstractmethod
     def find_category(self):
+        """ Busca uma categoria """
+        pass
+
+    @abc.abstractmethod
+    def update_category(self):
+        """ Atualiza um categoria """
         pass
 
     @abc.abstractmethod
