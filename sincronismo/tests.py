@@ -16,8 +16,8 @@ class BaseWSClientModelTests(TestCase):
 
     def test_init(self):
         """ Verifica se o objeto tem o comportamento padrão esperado. """
-        self.assertEqual(self.base.url_base, 'http://localho 
-        self.assertEqual(self.base.token, 'abcdefghijlmnopqr 
+        self.assertEqual(self.base.url_base, 'http://localhost:8000')
+        self.assertEqual(self.base.token, 'abcdefghijlmnopqrstuvxz')
 
     def test_add_param(self):
         """ Verifica método que adiciona parâmetros para futuras chamadas HTTP. """
