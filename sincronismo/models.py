@@ -100,14 +100,7 @@ class MyABC(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def check_exception_callback(self, data):
-        """ Verifica se a requisicão gerou alguma exception.
-
-        Args:
-            data: Dicionário de dados com retorno da requisição.
-
-        Returns:
-            Boolean: True para excption e False para sucesso.
-        """
+        """ Verifica se a requisicão gerou alguma exception. """
         pass
 
 
