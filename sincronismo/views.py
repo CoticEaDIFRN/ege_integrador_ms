@@ -36,7 +36,7 @@ def find_user_moodle(request):
         username = request.GET['username']
         model = MoodleWSClient()
         response = model.find_user(username)
-        return HttpResponse(response)
+        return HttpResponse(response, content_type='application/json')
     else:
         raise Http404()
 

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test import Client
 
 from .models import BaseWSClient
 from .models import MoodleWSClient
@@ -35,6 +36,7 @@ class MoodleWSClientModelTests(TestCase):
     def setUp(self):
         """ Prepara objeto para testes. """
         self.model = MoodleWSClient()
+        self.client = Client()
 
     def test_init(self):
         """ Verifica se o objeto tem o comportamento padrão esperado. """
@@ -86,6 +88,12 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['username'], 'ptest')
         self.assertEqual(r_json[0]['firstname'], 'python')
+
+    def test_find_user_in_view(self):
+        """ Busca usuário diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_user', {'username': 'ptest'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['data'][0]['username'], 'ptest')
 
     def test_find_user_no_exist(self):
         """ Busca usuário que não existe no moodle. """
