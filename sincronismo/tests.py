@@ -192,7 +192,25 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['categoryid'], 1)
         self.assertEqual(r_json[0]['shortname'], 'curso1')
+
+    def test_update_course(self):
+        """ Atualização de curso no moodle. """
+        self.model.update_course(2, 'Curso Atualizado')
+        r_json = self.model.request_json
         
+        self.assertFalse(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json['warnings'], [])
+
+    def test_update_course_no_exist(self):
+        """ Atualização de curso que não existe no moodle. """
+        self.model.update_user(7000, 'Curso Falha')
+        r_json = self.model.request_json
+        
+        self.assertTrue(self.model.response['exception'])
+        self.assertEqual(self.model.response['status'], 200)
+        self.assertEqual(r_json['exception'], 'invalid_parameter_exception')
+        self.assertEqual(r_json['errorcode'], 'invalidparameter')
     
     def test_create_category(self):
         self.model.create_category( 1, 'Categoria 1', 'Teste da criação da Categoria 1')

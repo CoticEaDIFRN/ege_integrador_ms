@@ -71,6 +71,10 @@ class MyABC(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def find_course(self):
         pass
+    
+    @abc.abstractmethod
+    def update_course(self):
+        pass
 
     @abc.abstractmethod
     def create_category(self):
@@ -254,6 +258,24 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         try:
             self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
+
+    def update_course(self, courses_id, fullname=None, shortname=None, category_id=None):
+        self.request_resource = 'core_course_update_courses'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('courses[0][id]', courses_id)
+        
+        if fullname is not None:
+            self.add_param('courses[0][fullname]', fullname)
+        if shortname is not None:
+            self.add_param('courses[0][shortname]', shortname)
+        if category_id is not None:
+            self.add_param('courses[0][categoryid]', category_id)
+
+        try:
+            self.send_put()
             return self.get_response()
         except:
            return sys.exc_info()[0]
