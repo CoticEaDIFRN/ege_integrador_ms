@@ -19,7 +19,7 @@ class BaseWSClient(object):
         """ Adiciona um novo parâmetro para ser usado na requisição.
         
         Args:
-            key: Parametro.
+            key: Parâmetro.
             value: Valor do parâmetro.
         """
         self.params[key] = value
@@ -124,7 +124,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
             data: Dicionário de dados com retorno da requisição.
 
         Returns:
-            Boolean: True para excption e False para sucesso.
+            Boolean: True para exception e False para sucesso.
         """
         data = self.request_json
         if isinstance(data, dict):
@@ -157,7 +157,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
         return json.dumps(self.response)
 
     def create_user(self, username, password, firstname, lastname, email):
-        """Cria um novo usuário no Moodle.
+        """
+        Cria um novo usuário no Moodle.
 
         Args:
             username: Login do usuário que será criado.
@@ -165,11 +166,11 @@ class MoodleWSClient(BaseWSClient, MyABC):
             firstname: Primeiro nome do novo usuário.
             lastname: Último nome do novo usuário.
             email: E-mail do novo usuário.
+            
         Returns:
             json: Status: Código http de resposta.
                   Exception: Se existe exception na requisição.
                   Data: Dados gerados pela requisição.
-        Raises:
 
         """
         self.request_resource = 'core_user_create_users'
@@ -188,7 +189,21 @@ class MoodleWSClient(BaseWSClient, MyABC):
             return sys.exc_info()[0]
     
     def update_user(self, id_user, username=None, firstname=None, lastname=None, email=None):
-        
+        """
+        Atualiza um usuário no Moodle.
+
+        Args:
+            username: Login do usuário que será criado.
+            firstname: Primeiro nome do novo usuário.
+            lastname: Último nome do novo usuário.
+            email: E-mail do novo usuário.
+
+        Returns:
+            json: Status: Código http de resposta.
+                  Exception: Se existe exception na requisição.
+                  Data: Dados gerados pela requisição.
+
+        """
         self.request_resource = 'core_user_update_users'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('users[0][id]', id_user)
