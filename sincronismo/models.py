@@ -166,7 +166,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
             firstname: Primeiro nome do novo usuário.
             lastname: Último nome do novo usuário.
             email: E-mail do novo usuário.
-            
+
         Returns:
             json: Status: Código http de resposta.
                   Exception: Se existe exception na requisição.
@@ -188,15 +188,16 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
             return sys.exc_info()[0]
     
-    def update_user(self, id_user, username=None, firstname=None, lastname=None, email=None):
+    def update_user(self, user_id, username=None, firstname=None, lastname=None, email=None):
         """
         Atualiza um usuário no Moodle.
 
-        Args:
-            username: Login do usuário que será criado.
-            firstname: Primeiro nome do novo usuário.
-            lastname: Último nome do novo usuário.
-            email: E-mail do novo usuário.
+        Args
+            user_id: Id do usuário que será atualizado.
+            username: Novo login do usuário.
+            firstname: Novo primeiro nome do usuário.
+            lastname: Novo último nome do usuário.
+            email: Novo e-mail do usuário.
 
         Returns:
             json: Status: Código http de resposta.
@@ -206,7 +207,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         """
         self.request_resource = 'core_user_update_users'
         self.add_param('wsfunction', self.request_resource)
-        self.add_param('users[0][id]', id_user)
+        self.add_param('users[0][id]', user_id)
         
         if username is not None:
             self.add_param('users[0][username]', username)
@@ -224,6 +225,18 @@ class MoodleWSClient(BaseWSClient, MyABC):
            return sys.exc_info()[0]
 
     def find_user(self, username):
+        """
+        Busca um usuário no Moodle.
+
+        Args:
+            username: Login do usuário.
+
+        Returns:
+            json: Status: Código http de resposta.
+                  Exception: Se existe exception na requisição.
+                  Data: Dados gerados pela requisição.
+
+        """
         self.request_resource = 'core_user_get_users_by_field'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('field', 'username')
