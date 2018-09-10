@@ -5,6 +5,7 @@ from .models import MoodleWSClient
 from .models import SuapWSClient
 
 import json, requests
+import ipdb; ipdb.set_trace()
 
 class BaseWSClientModelTests(TestCase):
     
@@ -46,7 +47,7 @@ class MoodleWSClientModelTests(TestCase):
         Verifica se o objeto tem o comportamento padrão esperado.
         """
         self.assertEqual(self.model.request_format, 'json')
-    
+    '''
     def test_create_user(self):
         """
         Testa criação de usuário no moodle.
@@ -102,7 +103,7 @@ class MoodleWSClientModelTests(TestCase):
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json, [])
-    
+    '''
     def test_create_course(self):
         self.model.create_course('Curso_1', 'curso1', 1)
         r_json = self.model.request_json
@@ -112,7 +113,7 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(r_json[0]['categoryid'], 1)
         self.assertEqual(r_json[0]['shortname'], 'curso1')
         
-    
+    '''
     def test_create_category(self):
         self.model.create_category( 1, 'Categoria 1', 'Teste da criação da Categoria 1')
         r_json = self.model.request_json
@@ -121,7 +122,7 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['name'], 'Categoria 1')
     
-
+'''
 class SuapWSClientModelTests(TestCase):
     
     def test_init(self):
