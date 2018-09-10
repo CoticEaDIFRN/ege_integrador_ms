@@ -19,7 +19,7 @@ class BaseWSClient(object):
         """ Adiciona um novo parâmetro para ser usado na requisição.
         
         Args:
-            key: Parametro.
+            key: Parâmetro.
             value: Valor do parâmetro.
         """
         self.params[key] = value
@@ -32,7 +32,7 @@ class BaseWSClient(object):
         self.request_json = request.json()
 
     def send_put(self):
-        """ Envia uma requisição do tipo POST. """
+        """ Envia uma requisição do tipo PUT. """
         request = requests.put(self.url_base, params=self.params)
         self.request_status = request.status_code
         self.request_content = request.content
@@ -50,42 +50,57 @@ class MyABC(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
     def create_user(self):
+        """ Cria um novo usuário """
         pass
 
     @abc.abstractmethod
     def find_user(self, field):
+        """ Busca um usuário """
         pass
 
     @abc.abstractmethod
     def update_user(self):
+        """ Atualiza um usuário """
+        pass
+
+    @abc.abstractmethod
+    def enrol_user(self):
+        """ Associa um usuário a uma curso """
         pass
 
     @abc.abstractmethod
     def create_course(self):
+        """ Cria um novo curso """
         pass
 
     @abc.abstractmethod
     def find_course(self):
+        """ Busca um curso """
+        pass
+    
+    @abc.abstractmethod
+    def update_course(self):
+        """ Atualiza um curso """
         pass
 
     @abc.abstractmethod
     def create_category(self):
+        """ Cria um nova categoria """
         pass
 
     @abc.abstractmethod
     def find_category(self):
+        """ Busca uma categoria """
+        pass
+
+    @abc.abstractmethod
+    def update_category(self):
+        """ Atualiza um categoria """
         pass
 
     @abc.abstractmethod
     def check_exception_callback(self, data):
-        """ Verifica se a requisicão gerou alguma exception.
-
-        Args:
-            data: Dicionário de dados com retorno da requisição.
-
-        Returns:
-            Boolean: True para excption e False para sucesso.
-        """
+        """ Verifica se a requisicão gerou alguma exception. """
         pass
 
 
@@ -109,7 +124,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
             data: Dicionário de dados com retorno da requisição.
 
         Returns:
-            Boolean: True para excption e False para sucesso.
+            Boolean: True para exception e False para sucesso.
         """
         data = self.request_json
         if isinstance(data, dict):
@@ -142,7 +157,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
         return json.dumps(self.response)
 
     def create_user(self, username, password, firstname, lastname, email):
-        """Cria um novo usuário no Moodle.
+        """
+        Cria um novo usuário no Moodle.
 
         Args:
             username: Login do usuário que será criado.
@@ -150,11 +166,11 @@ class MoodleWSClient(BaseWSClient, MyABC):
             firstname: Primeiro nome do novo usuário.
             lastname: Último nome do novo usuário.
             email: E-mail do novo usuário.
+
         Returns:
             json: Status: Código http de resposta.
                   Exception: Se existe exception na requisição.
                   Data: Dados gerados pela requisição.
-        Raises:
 
         """
         self.request_resource = 'core_user_create_users'
@@ -172,11 +188,26 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
             return sys.exc_info()[0]
     
-    def update_user(self, id_user, username=None, firstname=None, lastname=None, email=None):
-        
+    def update_user(self, user_id, username=None, firstname=None, lastname=None, email=None):
+        """
+        Atualiza um usuário no Moodle.
+
+        Args
+            user_id: Id do usuário que será atualizado.
+            username: Novo login do usuário.
+            firstname: Novo primeiro nome do usuário.
+            lastname: Novo último nome do usuário.
+            email: Novo e-mail do usuário.
+
+        Returns:
+            json: Status: Código http de resposta.
+                  Exception: Se existe exception na requisição.
+                  Data: Dados gerados pela requisição.
+
+        """
         self.request_resource = 'core_user_update_users'
         self.add_param('wsfunction', self.request_resource)
-        self.add_param('users[0][id]', id_user)
+        self.add_param('users[0][id]', user_id)
         
         if username is not None:
             self.add_param('users[0][username]', username)
@@ -194,10 +225,46 @@ class MoodleWSClient(BaseWSClient, MyABC):
            return sys.exc_info()[0]
 
     def find_user(self, username):
+        """
+        Busca um usuário no Moodle.
+
+        Args:
+            username: Login do usuário.
+
+        Returns:
+            json: Status: Código http de resposta.
+                  Exception: Se existe exception na requisição.
+                  Data: Dados gerados pela requisição.
+
+        """
         self.request_resource = 'core_user_get_users_by_field'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('field', 'username')
         self.add_param('values[0]', username)
+
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
+    
+    def enrol_user(self, user_id, course_id, role_id):
+        self.request_resource = 'enrol_manual_enrol_users'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('enrolments[0][courseid]', course_id)
+        self.add_param('enrolments[0][roleid]', role_id)
+        self.add_param('enrolments[0][userid]', user_id)
+
+        try:
+            self.send_post()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
+
+    def get_enrolled_users_in_course(self, course_id):
+        self.request_resource = 'core_enrol_get_enrolled_users'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('courseid', course_id)
 
         try:
             self.send_get()
@@ -230,6 +297,24 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
            return sys.exc_info()[0]
 
+    def update_course(self, course_id, fullname=None, shortname=None, category_id=None):
+        self.request_resource = 'core_course_update_courses'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('courses[0][id]', course_id)
+        
+        if fullname is not None:
+            self.add_param('courses[0][fullname]', fullname)
+        if shortname is not None:
+            self.add_param('courses[0][shortname]', shortname)
+        if category_id is not None:
+            self.add_param('courses[0][categoryid]', category_id)
+
+        try:
+            self.send_put()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
+
     def create_category(self, name, description):
         
         self.request_resource = 'core_course_create_categories'
@@ -251,6 +336,22 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
         try:
             self.send_get()
+            return self.get_response()
+        except:
+           return sys.exc_info()[0]
+
+    def update_category(self, category_id, name=None, description=None):
+        self.request_resource = 'core_course_update_categories'
+        self.add_param('wsfunction', self.request_resource)
+        self.add_param('categories[0][id]', category_id)
+        
+        if name is not None:
+            self.add_param('categories[0][name]', name)
+        if description is not None:
+            self.add_param('categories[0][description]', description)
+
+        try:
+            self.send_put()
             return self.get_response()
         except:
            return sys.exc_info()[0]
