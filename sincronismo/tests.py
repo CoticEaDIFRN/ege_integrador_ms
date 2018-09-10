@@ -164,13 +164,25 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(r_json['errorcode'], 'invalidrecord')
 
     def test_create_course(self):
-        self.model.create_course('Curso_1', 'curso1', 1)
+        """ Teste para Criação de Cursos"""
+        self.model.create_course('Curso_Teste', 'curso_teste', 1)
         r_json = self.model.request_json
 
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['categoryid'], 1)
-        self.assertEqual(r_json[0]['shortname'], 'curso1')
+        self.assertEqual(r_json[0]['shortname'], 'curso_teste')
+
+    def test_find_course(self):
+        """ Busca Curso no moodle. """
+        self.model.find_course('Curso_Teste')
+        r_json = self.model.request_json
+
+    def test_find_course_in_view(self):
+        """ Busca Curso diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_course', {'fullname': 'Curso_Teste'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['data'][0]['fullname'], 'Curso_Teste')
 
     def test_update_course(self):
         """ Atualiza curso no moodle. """
@@ -191,12 +203,23 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(r_json['warnings'][0]['warningcode'], 'invalidrecord')
     
     def test_create_category(self):
-        self.model.create_category( 1, 'Categoria 1', 'Teste da criação da Categoria 1')
+        self.model.create_category('Categoria 1', 'Teste da criação da Categoria 1')
         r_json = self.model.request_json
         
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['name'], 'Categoria 1')
+
+    def test_find_category(self):
+        """ Busca Categoria no moodle. """
+        self.model.find_category('Categoria 1')
+        r_json = self.model.request_json
+
+    def test_find_category_in_view(self):
+        """ Busca Categoria diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_category', {'name': 'Categoria 1'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['data'][0]['name'], 'Categoria 1')
     
     def test_update_category(self):
         """ Atualiza categoria no moodle. """
