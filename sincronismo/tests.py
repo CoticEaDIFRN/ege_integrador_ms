@@ -91,9 +91,9 @@ class MoodleWSClientModelTests(TestCase):
 
     def test_find_user_in_view(self):
         """ Busca usuário diretamente na view da API. """
-        response = self.client.get('/api-v1/moodle/find_user', {'username': 'ptest'})
+        response = self.client.get('/api-v1/moodle/find_user', {'username': 'admin'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['data'][0]['username'], 'ptest')
+        self.assertEqual(response.json()['data'][0]['username'], 'admin')
 
     def test_find_user_no_exist(self):
         """ Busca usuário que não existe no moodle. """
@@ -104,6 +104,14 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json, [])
     
+    def test_find_user_no_exist_in_view(self):
+        """ Busca usuário diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_user', {'username': "teste"})
+        print(response.json()['status'])
+        self.assertEqual(response.status_code, 200)
+        # self.assertEqual(response.json()['data'][0]['exception'], 'invalid_parameter_exception')
+        # self.assertEqual(response.json()['data'][0]['errorcode'], 'invalidparameter')
+
     def test_enrol_user(self):
         """ Associa um usuário a um curso do moodle. """
         self.model.enrol_user(2, 2, 3)
