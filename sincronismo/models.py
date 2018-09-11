@@ -108,8 +108,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
     def __init__(self):
         # TODO Colocar em arquivo de configuração da app
-        token = "d34003902dcde0571356b513d4a1a03d"
-        url_base = 'http://localhost/moodle/webservice/rest/server.php'
+        token = "0b0c9af5bd3eba5a6fccbc3d1594376f"
+        url_base = 'http://localhost:8080/moodle/webservice/rest/server.php'
         request_format = 'json'
 
         super(MoodleWSClient, self).__init__(url_base, token)
