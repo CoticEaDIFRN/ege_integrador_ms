@@ -14,9 +14,9 @@ def create_user_moodle(request):
 
         model = MoodleWSClient()
         response = model.create_user(username, password, firstname, lastname, email)
-        return HttpResponse(response)
+        return HttpResponse(response, content_type='application/json')
     else:
-        raise Http404()
+        raise Http404(content_type='application/json')
 
 def update_user_moodle(request):
     if request.method == "PUT":
