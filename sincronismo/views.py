@@ -38,7 +38,7 @@ def find_user_moodle(request):
         response = model.find_user(username)
         return HttpResponse(response, content_type='application/json')
     else:
-        raise Http404()
+        raise Http404(content_type='application/json')
 
 def create_course(request):
     if request.method == "POST":

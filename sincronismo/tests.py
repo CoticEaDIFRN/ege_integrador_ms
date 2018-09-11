@@ -56,6 +56,7 @@ class MoodleWSClientModelTests(TestCase):
         no moodle. """
         self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
         r_json = self.model.request_json
+        
 
         self.assertTrue(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
@@ -250,5 +251,4 @@ class MoodleWSClientModelTests(TestCase):
 class SuapWSClientModelTests(TestCase):
     
     def test_init(self):
-        """ Verifica se o objeto tem o comportamento padrão esperado. """
-pass
+        pass
