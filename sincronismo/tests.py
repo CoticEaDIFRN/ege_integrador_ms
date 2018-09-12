@@ -51,12 +51,20 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['username'], 'ptest')
     
+    def test_create_user_in_view(self):
+        """ Criar usuário diretamente na view da API. """
+        response = self.client.post('/api-v1/moodle/create_user', {'username': 'ptest_view', 'password': 'pass', 'firstname': 'ptest', 'lastname': 'view', 'email': 'ptest_view@ptest_view.com'})
+        print('-----------------')
+        print(self.client.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['data'][0]['username'], 'ptest_view')
+    
     def test_create_user_already_exist(self):
         """ Tenta criar um usuário com dados de um usuário existente
         no moodle. """
         self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
         r_json = self.model.request_json
-
+        
         self.assertTrue(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json['exception'], 'invalid_parameter_exception')
@@ -91,9 +99,9 @@ class MoodleWSClientModelTests(TestCase):
     
     def test_find_user_in_view(self):
         """ Busca usuário diretamente na view da API. """
-        response = self.client.get('/api-v1/moodle/find_user', {'username': 'ptest'})
+        response = self.client.get('/api-v1/moodle/find_user', {'username': 'admin'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['data'][0]['username'], 'ptest')
+        self.assertEqual(response.json()['data'][0]['username'], 'admin')
 
     def test_find_user_no_exist(self):
         """ Busca usuário que não existe no moodle. """
@@ -104,6 +112,12 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json, [])
     
+    def test_find_user_no_exist_in_view(self):
+        """ Busca usuário diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_user', {'username': "teste"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.context)
+
     def test_enrol_user(self):
         """ Associa um usuário a um curso do moodle. """
         self.model.enrol_user(2, 2, 3)
@@ -244,5 +258,4 @@ class MoodleWSClientModelTests(TestCase):
 class SuapWSClientModelTests(TestCase):
     
     def test_init(self):
-        """ Verifica se o objeto tem o comportamento padrão esperado. """
-pass
+        pass

@@ -108,8 +108,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
     def __init__(self):
         # TODO Colocar em arquivo de configuração da app
-        token = "d34003902dcde0571356b513d4a1a03d"
-        url_base = 'http://localhost/moodle/webservice/rest/server.php'
+        token = "0b0c9af5bd3eba5a6fccbc3d1594376f"
+        url_base = 'http://localhost:8080/moodle/webservice/rest/server.php'
         request_format = 'json'
 
         super(MoodleWSClient, self).__init__(url_base, token)
@@ -149,10 +149,18 @@ class MoodleWSClient(BaseWSClient, MyABC):
         """
         if self.request_status == 200:
             self.response['status'] = self.request_status
-            self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_json
+
+            if self.request_json == []:
+                self.response['data'] = None
+                self.response['exception'] = False
+            else:
+                self.response['data'] = self.request_json
+                self.response['exception'] = self.check_exception_callback()
+
         else:
             self.response['status'] = self.request_status
+            self.response['data'] = None
+            self.response['exception'] = False
         
         return json.dumps(self.response)
 
@@ -181,7 +189,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('users[0][firstname]', firstname)
         self.add_param('users[0][lastname]', lastname)
         self.add_param('users[0][email]', email)
-
+        
         try:
             self.send_post()
             return self.get_response()
@@ -246,7 +254,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
             self.send_get()
             return self.get_response()
         except:
-           return sys.exc_info()[0]
+            print(sys.exc_info())
+            return sys.exc_info()[0]
     
     def enrol_user(self, user_id, course_id, role_id):
         self.request_resource = 'enrol_manual_enrol_users'
