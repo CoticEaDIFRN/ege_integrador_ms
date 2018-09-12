@@ -61,6 +61,15 @@ def find_course(request):
     else:
         raise Http404()
 
+def find_course_in_view(request):
+    if request.method == "GET":
+        name = request.GET['shortname']
+        model = MoodleWSClient()
+        response = model.find_course_in_view(shortname)
+        return HttpResponse(response)
+    else:
+        raise Http404()
+
 def create_category(request):
     if request.method == "POST":
         name = request.GET['name']
@@ -81,3 +90,11 @@ def find_category(request):
     else:
         raise Http404()
 
+def find_category_in_view(request):
+    if request.method == "GET":
+        name = request.GET['name']
+        model = MoodleWSClient()
+        response = model.find_category_in_view(name)
+        return HttpResponse(response)
+    else:
+        raise Http404()
