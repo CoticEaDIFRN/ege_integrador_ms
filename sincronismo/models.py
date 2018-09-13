@@ -149,10 +149,18 @@ class MoodleWSClient(BaseWSClient, MyABC):
         """
         if self.request_status == 200:
             self.response['status'] = self.request_status
-            self.response['exception'] = self.check_exception_callback()
-            self.response['data'] = self.request_json
+
+            if self.request_json == []:
+                self.response['data'] = None
+                self.response['exception'] = False
+            else:
+                self.response['data'] = self.request_json
+                self.response['exception'] = self.check_exception_callback()
+
         else:
             self.response['status'] = self.request_status
+            self.response['data'] = None
+            self.response['exception'] = False
         
         return json.dumps(self.response)
 
@@ -181,7 +189,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
         self.add_param('users[0][firstname]', firstname)
         self.add_param('users[0][lastname]', lastname)
         self.add_param('users[0][email]', email)
-
+        
         try:
             self.send_post()
             return self.get_response()
@@ -246,7 +254,7 @@ class MoodleWSClient(BaseWSClient, MyABC):
             self.send_get()
             return self.get_response()
         except:
-           return sys.exc_info()[0]
+            return sys.exc_info()[0]
     
     def enrol_user(self, user_id, course_id, role_id):
         self.request_resource = 'enrol_manual_enrol_users'
@@ -285,14 +293,14 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
             return sys.exc_info()[0]
 
-    def find_course(self, shortname ):
+    def find_course(self, shortname):
         self.request_resource = 'core_course_get_courses_by_field'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('field', 'shortname')
         self.add_param('values[0]', shortname)
 
         try:
-            self.send_get()
+            self.send_get() 
             return self.get_response()
         except:
            return sys.exc_info()[0]

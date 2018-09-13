@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test import Client
 
 from .models import BaseWSClient
 from .models import MoodleWSClient
@@ -10,13 +11,13 @@ class BaseWSClientModelTests(TestCase):
     
     def setUp(self):
         """ Prepara objeto para testes. """
-        self.base = BaseWSClient('http://localhost:8000', 'abcdefghijlmnopqrstuvxz')
+        self.base = BaseWSClient('http://localhost:8000/', 'abcdefghijlmnopqrstuvxz')
         self.base.add_param('param1', 10)
         self.base.add_param('param2', 'test')
 
     def test_init(self):
         """ Verifica se o objeto tem o comportamento padrão esperado. """
-        self.assertEqual(self.base.url_base, 'http://localhost:8000')
+        self.assertEqual(self.base.url_base, 'http://localhost:8000/')
         self.assertEqual(self.base.token, 'abcdefghijlmnopqrstuvxz')
 
     def test_add_param(self):
@@ -35,11 +36,12 @@ class MoodleWSClientModelTests(TestCase):
     def setUp(self):
         """ Prepara objeto para testes. """
         self.model = MoodleWSClient()
+        self.client = Client()
 
     def test_init(self):
         """ Verifica se o objeto tem o comportamento padrão esperado. """
         self.assertEqual(self.model.request_format, 'json')
-    
+
     def test_create_user(self):
         """ Verifica criação de usuário no moodle. """
         self.model.create_user('ptest', 'ptest', 'python', 'test', 'aaa@aaa.com')
@@ -49,12 +51,20 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['username'], 'ptest')
     
+    # def test_create_user_in_view(self):
+    #     """ Criar usuário diretamente na view da API. """
+    #     response = self.client.post('/api-v1/moodle/create_user', {'username': 'ptest_view', 'password': 'pass', 'firstname': 'ptest', 'lastname': 'view', 'email': 'ptest_view@ptest_view.com'})
+    #     print('-----------------')
+    #     print(self.client.url)
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.json()['data'][0]['username'], 'ptest_view')
+    
     def test_create_user_already_exist(self):
         """ Tenta criar um usuário com dados de um usuário existente
         no moodle. """
         self.model.create_user('admin', 'ptest', 'python', 'test', 'aaa@aaa.com')
         r_json = self.model.request_json
-
+        
         self.assertTrue(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json['exception'], 'invalid_parameter_exception')
@@ -86,6 +96,12 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['username'], 'ptest')
         self.assertEqual(r_json[0]['firstname'], 'python')
+    
+    def test_find_user_in_view(self):
+        """ Busca usuário diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_user', {'username': 'admin'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['data'][0]['username'], 'admin')
 
     def test_find_user_no_exist(self):
         """ Busca usuário que não existe no moodle. """
@@ -96,6 +112,12 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json, [])
     
+    def test_find_user_no_exist_in_view(self):
+        """ Busca usuário diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_user', {'username': "teste"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.context)
+
     def test_enrol_user(self):
         """ Associa um usuário a um curso do moodle. """
         self.model.enrol_user(2, 2, 3)
@@ -154,19 +176,31 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json['exception'], 'dml_missing_record_exception')
         self.assertEqual(r_json['errorcode'], 'invalidrecord')
-
+    
     def test_create_course(self):
-        self.model.create_course('Curso_1', 'curso1', 1)
+        """ Teste para Criação de Cursos"""
+        self.model.create_course('Curso_Teste', 'curso_teste', 1)
         r_json = self.model.request_json
 
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['categoryid'], 1)
-        self.assertEqual(r_json[0]['shortname'], 'curso1')
+        self.assertEqual(r_json[0]['shortname'], 'curso_teste')
+    
+    def test_find_course(self):
+        """ Busca Curso no moodle. """
+        self.model.find_course('Curso_Teste')
+        r_json = self.model.request_json
+
+    def test_find_course_in_view(self):
+        """ Busca Curso diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_course', {'shortname': 'curso_teste'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['data'][0]['shortname'], 'curso_teste')
 
     def test_update_course(self):
         """ Atualiza curso no moodle. """
-        self.model.update_course(2, 'Curso Atualizado')
+        self.model.update_course(1, 'Curso Atualizado')
         r_json = self.model.request_json
         
         self.assertFalse(self.model.response['exception'])
@@ -183,12 +217,23 @@ class MoodleWSClientModelTests(TestCase):
         self.assertEqual(r_json['warnings'][0]['warningcode'], 'invalidrecord')
     
     def test_create_category(self):
-        self.model.create_category( 1, 'Categoria 1', 'Teste da criação da Categoria 1')
+        self.model.create_category('Categoria 1', 'Teste da criação da Categoria 1')
         r_json = self.model.request_json
         
         self.assertFalse(self.model.response['exception'])
         self.assertEqual(self.model.response['status'], 200)
         self.assertEqual(r_json[0]['name'], 'Categoria 1')
+    
+    def test_find_category(self):
+        """ Busca Categoria no moodle. """
+        self.model.find_category('Categoria 1')
+        r_json = self.model.request_json
+    
+    def test_find_category_in_view(self):
+        """ Busca Categoria diretamente na view da API. """
+        response = self.client.get('/api-v1/moodle/find_category', {'name': 'Categoria 1'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['data'][0]['name'], 'Categoria 1')
     
     def test_update_category(self):
         """ Atualiza categoria no moodle. """
@@ -213,5 +258,4 @@ class MoodleWSClientModelTests(TestCase):
 class SuapWSClientModelTests(TestCase):
     
     def test_init(self):
-        """ Verifica se o objeto tem o comportamento padrão esperado. """
         pass
