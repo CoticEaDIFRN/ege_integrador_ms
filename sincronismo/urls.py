@@ -8,8 +8,6 @@ urlpatterns = [
     path('moodle/find_user', views.find_user_moodle, name='moodle'),
     path('moodle/create_course', views.create_course, name='moodle'),
     path('moodle/find_course', views.find_course, name='moodle'),
-    path('moodle/find_course_in_view', views.find_course_in_view, name='moodle'),
     path('moodle/create_category', views.create_category, name='moodle'),
     path('moodle/find_category', views.find_category, name='moodle'),
-    path('moodle/find_category_in_view', views.find_category_in_view, name='moodle'),
 ]
