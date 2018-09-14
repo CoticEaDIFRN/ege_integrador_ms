@@ -254,7 +254,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
             self.send_get()
             return self.get_response()
         except:
-            print(sys.exc_info())
             return sys.exc_info()[0]
     
     def enrol_user(self, user_id, course_id, role_id):
@@ -294,14 +293,14 @@ class MoodleWSClient(BaseWSClient, MyABC):
         except:
             return sys.exc_info()[0]
 
-    def find_course(self, shortname ):
+    def find_course(self, shortname):
         self.request_resource = 'core_course_get_courses_by_field'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('field', 'shortname')
         self.add_param('values[0]', shortname)
 
         try:
-            self.send_get()
+            self.send_get() 
             return self.get_response()
         except:
            return sys.exc_info()[0]

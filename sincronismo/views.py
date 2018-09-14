@@ -27,7 +27,7 @@ def update_user_moodle(request):
 
         model = MoodleWSClient()
         response = model.update_user(id_user, None, firstname, lastname, email)
-        return HttpResponse(response)
+        return HttpResponse(response, content_type='application/json')
     else:
         raise Http404(content_type='application/json')
 
@@ -48,16 +48,16 @@ def create_course(request):
 
         model = MoodleWSClient
         response = model.create_course(fullname, shortname, categoryid)
-        return HttpResponse(response)
+        return HttpResponse(response, content_type='application/json')
     else:
         raise Http404(content_type='application/json')
 
 def find_course(request):
     if request.method == "GET":
-        name = request.GET['name']
+        shortname = request.GET['shortname']
         model = MoodleWSClient()
-        response = model.find_course(name)
-        return HttpResponse(response)
+        response = model.find_course(shortname)
+        return HttpResponse(response, content_type='application/json')
     else:
         raise Http404(content_type='application/json')
 
@@ -68,7 +68,7 @@ def create_category(request):
         
         model = MoodleWSClient
         response = model.create_category(name, description)
-        return HttpResponse(response)
+        return HttpResponse(response, content_type='application/json')
     else:
         raise Http404(content_type='application/json')
 
@@ -77,6 +77,6 @@ def find_category(request):
         name = request.GET['name']
         model = MoodleWSClient()
         response = model.find_category(name)
-        return HttpResponse(response)
+        return HttpResponse(response, content_type='application/json')
     else:
         raise Http404(content_type='application/json')
