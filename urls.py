@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework_swagger.views import get_swagger_view
+
+# schema_view = get_swagger_view(title='API')
 
 urlpatterns = [
-    # path('curso/', include('curso.urls')),
-    # path('campus/', include('campus.urls')),
-    # path('papeis/', include('papeis.urls')),
     path('admin/', admin.site.urls),
-    path('api-v1/', include('sincronismo.urls')),
+    path('api-docs/', get_swagger_view(title='API V1')),
+    path('', include('cachesuap.urls')),
+    path('', include('sincronismo.urls')),
 ]

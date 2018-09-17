@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cadastro', '0002_auto_20180828_1207'),
+        ('cachesuap', '0002_auto_20180828_1207'),
     ]
 
     operations = [
