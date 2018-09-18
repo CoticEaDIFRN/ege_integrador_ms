@@ -324,7 +324,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
            return sys.exc_info()[0]
 
     def create_category(self, name, description):
-        
         self.request_resource = 'core_course_create_categories'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('categories[0][name]', name)
