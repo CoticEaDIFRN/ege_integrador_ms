@@ -1,6 +1,6 @@
-from cadastro.models import Campus
-from cadastro.models import Curso
-from cadastro.models import Papel
+from cachesuap.models import Campus
+from cachesuap.models import Curso
+from cachesuap.models import Papel
 
 from rest_framework import serializers
 
