@@ -30,32 +30,32 @@ class OfertaSerializer(Serializer):
 class DiarioSUAPSerializer(Serializer):
     codigo = CharField(label="Código", help_text="")
 
-    """
+    # """
 
-    ```
-    [
-      {
-        "codigo": 'xx',
-        "componente_curricular": {"codigo": 'xx', "nome": 'xx'},
-        "curso": {"codigo": 'xx', "nome": 'xx'},
-        "campus": {"codigo": 'xx', "nome": 'xx', "sigla": 'xx'},
-        "oferta": {"ano": 'xx',"periodo": 'xx'},
-        "turma": {"codigo": 'xx', "nome": 'xx'}
-      },
-      {
-        "codigo": 'xx',
-        "componente_curricular_codigo": 'xx',
-        "componente_curricular_nome": 'xx',
-        "curso_codigo": 'xx',
-        "curso_nome": 'xx',
-        "campus_codigo": 'xx',
-        "campus_nome": 'xx',
-        "campus_sigla": 'xx',
-        "oferta_ano": 'xx',
-        "oferta_periodo": 'xx',
-        "turma_codigo": 'xx',
-        "turma_nome": 'xx'
-      }
-    ]
-    ```
-    """
+    # ```
+    # [
+    #   {
+    #     "codigo": 'xx',
+    #     "componente_curricular": {"codigo": 'xx', "nome": 'xx'},
+    #     "curso": {"codigo": 'xx', "nome": 'xx'},
+    #     "campus": {"codigo": 'xx', "nome": 'xx', "sigla": 'xx'},
+    #     "oferta": {"ano": 'xx',"periodo": 'xx'},
+    #     "turma": {"codigo": 'xx', "nome": 'xx'}
+    #   },
+    #   {
+    #     "codigo": 'xx',
+    #     "componente_curricular_codigo": 'xx',
+    #     "componente_curricular_nome": 'xx',
+    #     "curso_codigo": 'xx',
+    #     "curso_nome": 'xx',
+    #     "campus_codigo": 'xx',
+    #     "campus_nome": 'xx',
+    #     "campus_sigla": 'xx',
+    #     "oferta_ano": 'xx',
+    #     "oferta_periodo": 'xx',
+    #     "turma_codigo": 'xx',
+    #     "turma_nome": 'xx'
+    #   }
+    # ]
+    # ```
+    # """

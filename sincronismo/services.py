@@ -39,20 +39,6 @@ class DiarioService(APIView):
                     "codigo": 'xx',
                     "nome": 'xx'
                 }
-            },
-            {
-                "codigo": 'xx',
-                "componente_curricular_codigo": 'xx',
-                "componente_curricular_nome": 'xx',
-                "curso_codigo": 'xx',
-                "curso_nome": 'xx',
-                "campus_codigo": 'xx',
-                "campus_nome": 'xx',
-                "campus_sigla": 'xx',
-                "oferta_ano": 'xx',
-                "oferta_periodo": 'xx',
-                "turma_codigo": 'xx',
-                "turma_nome": 'xx'
             }
         ]
         return Response(result)
@@ -63,7 +49,7 @@ class DiarioService(APIView):
 
 
 class EscolherService(APIView):
-    base_name = 'diarios'
+    base_name = 'escolher'
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
@@ -112,7 +98,7 @@ class EscolherService(APIView):
 
 
 class ConfirmarService(APIView):
-    base_name = 'diarios'
+    base_name = 'confirmar'
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
@@ -161,12 +147,40 @@ class ConfirmarService(APIView):
 
 
 class SincronizarService(APIView):
+    base_name: 'sincronizar'
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request):
-        result = []
-        return Response(result)
+    # def get(self, request):
+    #     result = [
+    #        {
+    #             "codigo": 'xx',
+    #             "componente_curricular": {
+    #                 "codigo": 'xx',
+    #                 "nome": 'xx'
+    #             },
+    #             "curso": {
+    #                 "codigo": 'xx',
+    #                 "nome": 'xx'
+    #             },
+    #             "campus": {
+    #                 "codigo": 'xx',
+    #                 "nome": 'xx',
+    #                 "sigla": 'xx'
+    #             },
+    #             "oferta": {
+    #                 "ano": 'xx',
+    #                 "periodo": 'xx'
+    #             },
+    #             "turma": {
+    #                 "codigo": 'xx',
+    #                 "nome": 'xx'
+    #             }
+                
+    #         }
 
-    @classmethod
-    def get_extra_actions(cls):
-        return []
+    #     ]
+    #     return Response(result)
+
+    # @classmethod
+    # def get_extra_actions(cls):
+    #     return []

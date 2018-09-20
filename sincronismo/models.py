@@ -1,5 +1,3 @@
-# from django.db import models
-
 import json, requests, abc, sys
 
 class BaseWSClient(object):
