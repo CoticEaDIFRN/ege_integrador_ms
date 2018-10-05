@@ -1,6 +1,4 @@
-from cachesuap.models import Campus
-from cachesuap.models import Curso
-from cachesuap.models import Papel
+from cachesuap.models import Campus, Curso, Papel
 
 from rest_framework import serializers
 
@@ -22,4 +20,4 @@ class PapelSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = Papel
-        fields = ('id', 'codigo_moodle', 'codigo_suap', 'nome')
+        fields = ('codigo_moodle', 'codigo_suap', 'nome')
