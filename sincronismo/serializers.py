@@ -26,7 +26,7 @@ class OfertaSerializer(Serializer):
     ano = CharField(label="Ano")
     periodo = CharField(label="Período")
 
-
+ 
 class DiarioSUAPSerializer(Serializer):
     codigo = CharField(label="Código", help_text="")
 
