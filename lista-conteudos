@@ -1,0 +1,55 @@
+[
+    {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ms_integrador_moodle_suap/master/lista-conteudos.json",
+        "title": "lista-conteudos",
+        "type": "array",
+        "properties": {
+	    "turma": {
+		    "id": { "type": "integer"}, 
+            "codigo": {"type": "string"}
+            },
+	    "curso": {
+		    "codigo": {"type": "integer"},
+		    "nome": {"type": "string"}, 
+		    "id": {"type": "integer"}, 
+            "descricao": {"type": "string"}
+            },
+	    "componente_curricular": {
+			"id": {"type": "integer"}, 
+			"sigla": {"type": "string"}, 
+            "descricao": {"type": "string"}
+            },    
+	    "campus": {
+            "id": {"type": "integer"}, 
+			"sigla": {"type": "string"}, 
+            "nome": {"type": "string"}
+            },
+        "professores": [
+            {
+            "id": {"type": "integer"},
+            "nome": {"type": "string"},
+            "username": {"type": "string"},
+            "tipo": {"type": "string"},
+            "email_principal": {"type": "string"},
+            "email_secundario": {"type": "string"},
+            "status": {"type": "string"}
+            }
+            ],
+        "alunos": [
+            {
+            "id": {"type": "integer"},
+            "nome": {"type": "string"},
+            "username": {"type": "string"},
+            "email_academico": {"type": "string"},
+            "email_secundario": {"type": "string"},
+            "status": {"type": "string"},
+                "polo":{
+                    "id": {"type": "integer"},
+                    "nome": {"type": "string"}
+                    }
+                }
+            ]
+        }
+    }
+]   

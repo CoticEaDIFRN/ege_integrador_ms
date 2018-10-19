@@ -1,0 +1,30 @@
+[
+    {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ms_integrador_moodle_suap/master/lista-diarios.json",
+        "title": "lista-diarios",
+        "type": "array",
+        "properties": {
+	    "turma": {
+		    "id": { "type": "integer"}, 
+            "codigo": {"type": "string"}
+            },
+	    "curso": {
+		    "codigo": {"type": "integer"},
+		    "nome": {"type": "string"}, 
+		    "id": {"type": "integer"}, 
+            "descricao": {"type": "string"}
+            },
+	    "componente_curricular": {
+			"id": {"type": "integer"}, 
+			"sigla": {"type": "string"}, 
+            "descricao": {"type": "string"}
+            },    
+	    "campus": {
+            "id": {"type": "integer"}, 
+			"sigla": {"type": "string"}, 
+            "nome": {"type": "string"}
+            }
+        }
+    }
+]

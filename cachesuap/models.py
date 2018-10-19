@@ -4,13 +4,13 @@ from django.utils.translation import gettext_lazy as _
 class Campus(models.Model):
     
     label = 'Código Moodle'
-    codigo_moodle = models.IntegerField(_(label), unique=True, null=False)
+    codigo_moodle = models.IntegerField(_(label), unique=True, null=False, help_text="Informe o código do Moodle")
 
     label = 'Código SUAP'
-    codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False)
+    codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False, help_text="Informe o código do SUAP")
     
     label = 'Nome'
-    nome = models.CharField(_(label), max_length=100)
+    nome = models.CharField(_(label), max_length=100, help_text="Informe o nome do Campus")
 
     created_at = models.DateTimeField('Criado em', auto_now=True)
 
@@ -20,21 +20,20 @@ class Campus(models.Model):
 
     class Meta:
         verbose_name = _('Campus')
-        verbose_name_plural = _('Campus')
-        ordering = ['nome'] #Ordena o Papel por ordem crescente 'Nome'
-
+        verbose_name_plural = _('Campi')
+        ordering = ['nome'] 
+        
 
 class Curso(models.Model):
     
     label = 'Código Moodle'
-    t_help = 'Deve ser o mesmo código do Moodle'
-    codigo_moodle = models.IntegerField(_(label), help_text=_(t_help), unique=True, null=False)
+    codigo_moodle = models.IntegerField(_(label), unique=True, null=False, help_text="Informe o código do Moodle")
     
     label = 'Código SUAP'
-    codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False)
+    codigo_suap = models.IntegerField(_(label), unique=True, null=False, help_text="Informe o código do SUAP")
     
     label = 'Nome'
-    nome = models.CharField(_(label), max_length=100)
+    nome = models.CharField(_(label), max_length=100, help_text="Informe o nome do Curso")
 
     created_at = models.DateTimeField('Criado em', auto_now=True)
     
@@ -44,19 +43,19 @@ class Curso(models.Model):
     class Meta:
         verbose_name = _('Curso')
         verbose_name_plural = _('Cursos')
-        ordering = ['nome'] #Ordena o Papel por ordem crescente 'Nome'
+        ordering = ['nome']
 
 
 class Papel(models.Model):
     
     label = 'Código Moodle'
-    codigo_moodle = models.IntegerField(_(label), unique=True, null=False)
+    codigo_moodle = models.IntegerField(_(label), unique=True, null=False, help_text="Informe o código do Moodle")
 
     label = 'Código SUAP'
-    codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False)
+    codigo_suap = models.IntegerField(_('Código SUAP'), unique=True, null=False, help_text="Informe o código do SUAP")
     
     label = 'Nome'
-    nome = models.CharField(_(label), max_length=100)
+    nome = models.CharField(_(label), max_length=100, help_text="Informe qual o seu Papel. Ex.: Professor(a), Aluno(a)")
 
     created_at = models.DateTimeField('Criado em', auto_now=True)
 
