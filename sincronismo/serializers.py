@@ -1,5 +1,4 @@
 from sincronismo.BaseWSClient import MoodleWSClient, SuapWSClient
-
 from rest_framework.serializers import Serializer, CharField
 
 
