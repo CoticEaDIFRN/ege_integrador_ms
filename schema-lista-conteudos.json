@@ -1,0 +1,220 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ms_integrador_moodle_suap/master/schema-lista-diarios.json",
+    "type": "array",
+    "title": "diario Array",
+    "items": [
+        {
+            "type": "object",
+            "title": "diario Object",
+            "properties": {
+                "turma": {
+                    "type": "object",
+                    "title": "turma Object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        },
+                        "codigo": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "codigo"
+                    ],
+                    "additionalProperties": false
+                },
+                "curso": {
+                    "type": "object",
+                    "title": "curso Object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        },
+                        "codigo": {
+                            "type": "string"
+                        },
+                        "nome": {
+                            "type": "string"
+                        },
+                        "descricao": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "codigo",
+                        "nome",
+                        "descricao"
+                    ],
+                    "additionalProperties": false
+                },
+                "componente_curricular": {
+                    "type": "object",
+                    "title": "componente curricular Object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        },
+                        "sigla": {
+                            "type": "string"
+                        },
+                        "descricao": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "sigla",
+                        "descricao"
+                    ],
+                    "additionalProperties": false
+                },
+                "campus": {
+                    "type": "object",
+                    "title": "campus Object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        },
+                        "sigla": {
+                            "type": "string"
+                        },
+                        "nome": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "sigla",
+                        "nome"
+                    ],
+                    "additionalProperties": false
+                },
+                "professores": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "title": "professor Object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "nome": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "tipo": {
+                                    "type": "string"
+                                },
+                                "email_principal": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "email_secundario": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "status": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "nome",
+                                "username",
+                                "tipo",
+                                "email_principal",
+                                "email_secundario",
+                                "status"
+                            ],
+                            "additionalProperties": false
+                        }
+                    ]
+                },
+                "alunos": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "title": "aluno Object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "nome": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "email_academico": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "email_secundario": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "polo": {
+                                    "type": "object",
+                                    "title": "polo Object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "nome": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "nome"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "nome",
+                                "username",
+                                "email_academico",
+                                "email_secundario",
+                                "status",
+                                "polo"
+                            ],
+                            "additionalProperties": false
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "turma",
+                "curso",
+                "componente_curricular",
+                "campus",
+                "professores",
+                "alunos"
+            ],
+            "additionalProperties": false
+        }
+    ]
+}
