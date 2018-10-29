@@ -1,55 +1,120 @@
-[
-    {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ms_integrador_moodle_suap/master/lista-conteudos.json",
-        "title": "lista-conteudos",
-        "type": "array",
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ms_integrador_moodle_suap/master/lista-conteudos.json",
+    "title": "lista-conteudos",
+    "turma": {
+        "type": "object",
         "properties": {
-	    "turma": {
-		    "id": { "type": "integer"}, 
-            "codigo": {"type": "string"}
-            },
-	    "curso": {
-		    "codigo": {"type": "integer"},
-		    "nome": {"type": "string"}, 
-		    "id": {"type": "integer"}, 
-            "descricao": {"type": "string"}
-            },
-	    "componente_curricular": {
-			"id": {"type": "integer"}, 
-			"sigla": {"type": "string"}, 
-            "descricao": {"type": "string"}
-            },    
-	    "campus": {
-            "id": {"type": "integer"}, 
-			"sigla": {"type": "string"}, 
-            "nome": {"type": "string"}
-            },
-        "professores": [
-            {
-            "id": {"type": "integer"},
-            "nome": {"type": "string"},
-            "username": {"type": "string"},
-            "tipo": {"type": "string"},
-            "email_principal": {"type": "string"},
-            "email_secundario": {"type": "string"},
-            "status": {"type": "string"}
-            }
-            ],
-        "alunos": [
-            {
-            "id": {"type": "integer"},
-            "nome": {"type": "string"},
-            "username": {"type": "string"},
-            "email_academico": {"type": "string"},
-            "email_secundario": {"type": "string"},
-            "status": {"type": "string"},
-                "polo":{
-                    "id": {"type": "integer"},
-                    "nome": {"type": "string"}
+	        "id":   { "type": "integer"}, 
+            "codigo":   {"type": "string"}
+        },
+        "required": ["id", "codigo"],
+
+	"curso": {
+        "type": "object",
+        "properties": {
+	        "codigo":   {"type": "integer"},
+	        "nome":   {"type": "string"}, 
+            "id":   {"type": "integer"}, 
+            "descricao":    {"type": "string"}
+        },
+        "required": ["codigo", "nome", "id"],
+
+	"componente_curricular": {
+        "type": "object",
+        "properties": {
+	        "id":   {"type": "integer"}, 
+	        "sigla":    {"type": "string"}, 
+            "descricao":    {"type": "string"}
+        },    
+        "required": ["id", "sigla"],
+
+	"campus": {
+        "type": "object",
+        "properties": {
+            "id":   {"type": "integer"}, 
+		    "sigla":    {"type": "string"}, 
+            "nome":    {"type": "string"}
+        },
+        "required": ["id", "sigla"],
+    
+    "professores": {
+        "type": "array",
+        "items": [
+          {
+            "type": "integer",
+            "enum": ["id"]
+          },
+          {
+            "type": "string",
+            "enum": ["nome"]
+          },
+          {
+            "type": "string",
+            "enum": ["username"]
+          },
+          {
+            "type": "string",
+            "enum": ["tipo"]
+          },
+          {
+            "type": "string",
+            "enum": ["email_principal"]
+          },
+          {
+            "type": "string",
+            "enum": ["email_secundario"]
+          },
+          {
+            "type": "string",
+            "enum": ["status"]
+          }
+        ],
+        "additionalItems": false,
+
+    "alunos": {
+        "type": "array",
+        "items": [
+          {
+            "type": "integer",
+            "enum": ["id"]
+          },
+          {
+            "type": "string",
+            "enum": ["nome"]
+          },
+          {
+            "type": "string",
+            "enum": ["username"]
+          },
+          {
+            "type": "string",
+            "enum": ["email_academico"]
+          },
+          {
+            "type": "string",
+            "enum": ["email_secundario"]
+          },
+          {
+            "type": "string",
+            "enum": ["status"]
+          }
+        ],
+        "additionalItems": false,
+
+    "polo": {
+        "type": "object",
+        "properties": {
+            "id":   {"type": "integer"}, 
+		    "sigla":    {"type": "string"}, 
+            "nome":    {"type": "string"}
+        },
+        "required": ["id", "sigla"]
+                            }
+                        }
                     }
                 }
-            ]
+            }
         }
     }
-]   
+}
