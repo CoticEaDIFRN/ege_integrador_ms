@@ -7,6 +7,7 @@ urlpatterns = [
     path('integracao/api/v1/', include([
         path('suap/diarios', views.DiarioView.as_view()),
         path('suap/matriculados', views.MatriculadoView.as_view()),
+        path('moodle/buscar_usuario', views.BuscarUsuarioView.as_view()),
     ]))
 ]
 # v1 = DefaultRouter()
