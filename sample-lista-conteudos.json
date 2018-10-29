@@ -1,0 +1,49 @@
+[
+    {
+        "turma": {
+            "id": 0,
+            "codigo": "..."
+        },
+        "curso": {
+            "id": 0,
+            "codigo": "...",
+            "nome": "...",
+            "descricao": "..."
+        },
+        "componente_curricular": {
+            "id": 0,
+            "sigla": "...",
+            "descricao": "..."
+        },
+        "campus": {
+            "id": 0,
+            "sigla": "...",
+            "nome": "..."
+        },
+        "professores": [
+            {
+                "id": 0,
+                "nome": "...",
+                "username": "...",
+                "tipo": "...",
+                "email_principal": "...",
+                "email_secundario": "...",
+                "status": "..."
+            }
+        ],
+        "alunos": [
+            {
+                "id": 0,
+                "nome": "...",
+                "username": "...",
+                "email_academico": "...",
+                "email_secundario": "...",
+                "status": "...",
+                "polo": {
+                    "id": 0,
+                    "nome": "..."
+                }
+            }
+        ]
+    }
+]

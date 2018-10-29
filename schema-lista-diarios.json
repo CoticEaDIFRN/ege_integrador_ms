@@ -1,0 +1,60 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ms_integrador_moodle_suap/master/schema-lista-diarios.json",
+    "title": "lista-diarios",
+    "type": "array",
+    "items": [
+        {
+            "type": "object",
+            "title": "diario Object",
+            "properties": {
+                "turma": {
+                    "type": "object",
+                    "title": "turma Object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "codigo": {"type": "string"}
+                    },
+                    "required": ["id", "codigo"],
+                    "additionalProperties": false
+                },
+                "curso": {
+                    "type": "object",
+                    "title": "curso Object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "codigo": {"type": "string"},
+                        "nome": {"type": "string"},
+                        "descricao": {"type": ["string", "null"]}
+                    },
+                    "required": ["id", "codigo", "nome", "descricao"],
+                    "additionalProperties": false
+                },
+                "componente_curricular": {
+                    "type": "object",
+                    "title": "componente curricular Object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "sigla": {"type": "string"},
+                        "descricao": {"type": "string"}
+                    },
+                    "required": ["id", "sigla", "descricao"],
+                    "additionalProperties": false
+                },
+                "campus": {
+                    "type": "object",
+                    "title": "campus Object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "sigla": {"type": "string"},
+                        "nome": {"type": "string"}
+                    },
+                    "required": ["id", "sigla", "nome"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["turma", "curso", "componente_curricular", "campus"],
+            "additionalProperties": false
+        }
+    ]
+}

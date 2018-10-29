@@ -26,8 +26,6 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'corsheaders',
 
-    'django_extensions',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
