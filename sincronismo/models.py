@@ -366,7 +366,8 @@ class SuapWSClient(BaseWSClient):
     
     def __init__(self):
         token = "d34003902dcde0571356b513d4a1a03d"
-        url_base = 'http://localhost:7777/'
+        # url_base = 'http://localhost:7777/'
+        url_base = 'http://mock:7777/'
 
         super(SuapWSClient, self).__init__(url_base, token)
         self.add_param('token', self.token)
