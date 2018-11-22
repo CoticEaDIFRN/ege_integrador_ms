@@ -1,0 +1,46 @@
+[
+    {   
+        "turma": {
+            "id": 0,
+            "codigo": "..."
+        },
+        "curso": {
+            "id": 0,
+            "codigo": "...",
+            "nome": "...",
+            "descricao": null
+        },
+        "componente_curricular": {
+            "id": 0,
+            "sigla": "...",
+            "descricao": "..."
+        },
+        "campus": {
+            "id": 0,
+            "sigla": "...",
+            "nome": "..."
+        }
+    },
+    {   
+        "turma": {
+            "id": 0,
+            "codigo": "..."
+        },
+        "curso": {
+            "id": 0,
+            "codigo": "...",
+            "nome": "...",
+            "descricao": "..."
+        },
+        "componente_curricular": {
+            "id": 0,
+            "sigla": "...",
+            "descricao": "..."
+        },
+        "campus": {
+            "id": 0,
+            "sigla": "...",
+            "nome": "..."
+        }
+    }
+]

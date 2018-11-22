@@ -1,5 +1,4 @@
 from sincronismo.BaseWSClient import MoodleWSClient, SuapWSClient
-
 from rest_framework.serializers import Serializer, CharField
 
 
@@ -28,6 +27,6 @@ class OfertaSerializer(Serializer):
     ano = CharField(label="Ano", help_text="Informe o Ano")
     periodo = CharField(label="Período", help_text="Informe o Período")
 
-
+ 
 class DiarioSUAPSerializer(Serializer):
     codigo = CharField(label="Código", help_text="Informe o Código")

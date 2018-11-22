@@ -106,8 +106,8 @@ class MoodleWSClient(BaseWSClient, MyABC):
 
     def __init__(self):
         # TODO Colocar em arquivo de configuração da app
-        token = "d34003902dcde0571356b513d4a1a03d"
-        url_base = 'http://localhost/moodle/webservice/rest/server.php'
+        token = "0b0c9af5bd3eba5a6fccbc3d1594376f"
+        url_base = 'http://localhost:8080/moodle/webservice/rest/server.php'
         request_format = 'json'
 
         super(MoodleWSClient, self).__init__(url_base, token)
@@ -322,7 +322,6 @@ class MoodleWSClient(BaseWSClient, MyABC):
            return sys.exc_info()[0]
 
     def create_category(self, name, description):
-        
         self.request_resource = 'core_course_create_categories'
         self.add_param('wsfunction', self.request_resource)
         self.add_param('categories[0][name]', name)
@@ -366,6 +365,80 @@ class MoodleWSClient(BaseWSClient, MyABC):
 class SuapWSClient(BaseWSClient):
     
     def __init__(self):
-        pass
+        token = "d34003902dcde0571356b513d4a1a03d"
+        # url_base = 'http://localhost:7777/'
+        url_base = 'http://mock:7777/'
 
-    
+        super(SuapWSClient, self).__init__(url_base, token)
+        self.add_param('token', self.token)
+
+    def diarios(self, cod):
+        """
+        Retorna diários do professor.
+
+        Args:
+            cod: codigo SUAP do professor.
+        """
+        self.url_base += 'diarios/'
+        self.url_base += cod
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+            return sys.exc_info()[0]
+
+    def matriculados(self, diario):
+        """
+        Retorna diários do professor.
+
+        Args:
+            diario: codigo SUAP do diario.
+        """
+        self.url_base += 'matriculados/'
+        self.url_base += diario
+        try:
+            self.send_get()
+            return self.get_response()
+        except:
+            return sys.exc_info()[0]
+
+    def get_response(self):
+        """ Retorna resposta da requisição no formato JSON.
+
+        json: Status: Código http de resposta.
+              Exception: Se existe exception na requisição.
+              Data: Dados gerados pela requisição.
+        """
+        if self.request_status == 200:
+            self.response['status'] = self.request_status
+
+            if self.request_json == []:
+                self.response['data'] = None
+                self.response['exception'] = False
+            else:
+                self.response['data'] = self.request_json
+                self.response['exception'] = self.check_exception_callback()
+        else:
+            self.response['status'] = self.request_status
+            self.response['data'] = None
+            self.response['exception'] = False
+        
+        return json.dumps(self.response)
+
+    def check_exception_callback(self):
+        """ Verifica se a requisição gerou alguma exception. """
+        data = self.request_json
+        if isinstance(data, dict):
+            if 'exception' in data.keys():
+                return True
+            else:
+                return False
+        elif isinstance(data, list):
+            if 'exception' in data[0].keys():
+                return True
+            else:
+                return False
+        else:
+            return False
+
+
