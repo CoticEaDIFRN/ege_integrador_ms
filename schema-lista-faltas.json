@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ege_integrador_ms/master/schema-lista-faltas.json",
+    "title": "lista-faltas",
+    "type": "array",
+    "items": [
+        {
+            "type": "object",
+            "title": "faltas object",
+            "properties": {
+                "aluno":{
+                    "id": {"type": "integer"},
+                    "codigo": {"type": "string"},
+                    "nome": {"type": "string"}
+                }
+            },
+            "required": ["id", "codigo", "nome"],
+            "additionalProperties": true
+
+        }
+       
+    ]
+
+}
