@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://raw.githubusercontent.com/CoticEaDIFRN/ege_integrador_ms/master/schema-lista-notas.json",
+    "title": "lista-notas",
+    "type": "array",
+    "items": [
+        {
+            "type": "object",
+            "title": "notas object",
+            "properties": {
+                "aluno":{
+                    "id": {"type": "integer"},
+                    "codigo": {"type": "string"},
+                    "nome": {"type": "string"}
+                }
+            },
+            "required": ["id", "codigo", "nome"],
+            "additionalProperties": true
+
+        }
+       
+    ]
+
+}
