@@ -1,0 +1,14 @@
+[
+    {   
+        "polo": {
+            "id": 0,
+            "nome":"...",
+            "codigo": "..."
+        },
+        "aluno": {
+            "id": 0,
+            "nome": "...",
+            "matricula": 0
+        }
+    }
+]
