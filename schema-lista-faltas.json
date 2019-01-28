@@ -8,14 +8,31 @@
             "type": "object",
             "title": "faltas object",
             "properties": {
-                "aluno":{
-                    "id": {"type": "integer"},
-                    "codigo": {"type": "string"},
-                    "nome": {"type": "string"}
-                }
+                "polo": {
+                    "type": "object",
+                    "title": "polo object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "nome": {"type": "string"},
+                        "codigo": {"type": "string"}
+                    },
+                    "required": ["id", "nome", "codigo"],
+                    "additionalProperties": false
+                },
+                "aluno": {
+                    "type": "object",
+                    "title": "aluno Object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "nome": {"type": "string"},
+                        "matricula": {"type": "integer"}
+                    },
+                    "required": ["id", "nome", "matricula"],
+                    "additionalProperties": false
+                }                
             },
-            "required": ["id", "codigo", "nome"],
-            "additionalProperties": true
+            "required": ["polo", "aluno"],
+            "additionalProperties": false
 
         }
        
